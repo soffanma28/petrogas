@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Item_requestRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Models\User;
 
 /**
  * Class Item_requestCrudController
@@ -29,15 +30,16 @@ class Item_requestCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
     }
 
     protected function setupCreateOperation()
     {
         $this->crud->setValidation(Item_requestRequest::class);
-
+        // $this->crud->setCreateView('item_request.create');
+        // return view('item_request.create', compact('users'));
         // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        // $this->crud->setFromDb();
     }
 
     protected function setupUpdateOperation()

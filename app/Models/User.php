@@ -38,6 +38,10 @@ class User extends Model
         return $this->belongsTo('App\Models\Department', 'department_id', 'id');
     }
 
+    public function item_request(){
+        return $this->belongsTo('App\Models\item_request', 'id', 'user_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
