@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItemRequestsTable extends Migration
+class CreateItemRequestDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreateItemRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_requests', function (Blueprint $table) {
+        Schema::create('item_request_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->datetime('req_date')->useCurrent();
-            $table->string('status');
-            $table->string('remark')->nullable();
-            $table->text('items')->nullable();
+            $table->integer('req_id');
+            $table->integer('item_id');
+            $table->integer('qty');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateItemRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_requests');
+        Schema::dropIfExists('item_request_details');
     }
 }

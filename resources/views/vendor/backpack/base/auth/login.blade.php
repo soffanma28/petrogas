@@ -5,7 +5,15 @@
         <div class="col-12 col-md-8 col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-center mb-4">{{ trans('backpack::base.login') }}</h3>
+                    <div class="row mb-2">
+                        <div class="col-lg-4 pr-0">
+                            <img src="{{ asset('images/logo.png') }}" width="100%">    
+                        </div>
+                        <div class="col-lg-8 pl-0 pt-4">
+                            <h4 class="">General Services Online System</h4>
+                        </div>
+                    </div>
+                    <h5 class="text-center mb-4">{{ trans('backpack::base.login') }}</h5>  
                     <form class="col-md-12 p-t-10" role="form" method="POST" action="{{ route('backpack.auth.login') }}">
                         {!! csrf_field() !!}
 

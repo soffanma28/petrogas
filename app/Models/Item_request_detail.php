@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Item_request_detail extends Model
 {
     use CrudTrait;
 
@@ -15,12 +15,12 @@ class User extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'users';
+    protected $table = 'item_request_details';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['department_id', 'name', 'username', 'email', 'password', 'role'];
-    protected $hidden = ['password', 'remember_token',];
+    protected $fillable = ['req_id', 'item_id', 'qty'];
+    // protected $hidden = [];
     // protected $dates = [];
 
     /*
@@ -34,12 +34,8 @@ class User extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function department(){
-        return $this->belongsTo('App\Models\Department', 'department_id', 'id');
-    }
-
     public function item_request(){
-        return $this->belongsTo('App\Models\item_request', 'id', 'user_id');
+    	return $this->belongsTo('App\Models\Item_request', 'req_id', 'id');
     }
 
     /*

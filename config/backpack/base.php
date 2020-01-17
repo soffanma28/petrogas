@@ -52,6 +52,7 @@ return [
         // Load the fonts separately (so that you can replace them at will):
         'packages/source-sans-pro/source-sans-pro.css',
         'packages/line-awesome/css/line-awesome.min.css',
+        'packages/chart/Chart.min.css',
 
         // Example (the fonts above, loaded from CDN instead)
         // 'https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css',
@@ -90,7 +91,7 @@ return [
     // Try sidebar-hidden, sidebar-fixed, sidebar-compact, sidebar-lg-show
 
     // Sidebar element classes.
-    'sidebar_class' => 'sidebar sidebar-pills bg-light',
+    'sidebar_class' => 'sidebar sidebar-pills bg-white',
     // Remove "sidebar-transparent" for standard sidebar look
     // Try "sidebar-light" or "sidebar-dark" for dark/light links
     // You can also add a background class like bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
@@ -100,7 +101,7 @@ return [
     // ------
 
     // Footer element classes.
-    'footer_class' => 'app-footer',
+    'footer_class' => 'app-footer d-none',
     // hide it with d-none
     // change background color with bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
 
@@ -121,6 +122,7 @@ return [
     'scripts' => [
         // Backstrap includes jQuery, Bootstrap, CoreUI, PNotify, Popper
         'packages/backpack/base/js/bundle.js',
+        'packages/chart/Chart.min.js',
 
         // examples (everything inside the bundle, loaded from CDN)
         // 'https://code.jquery.com/jquery-3.4.1.min.js',

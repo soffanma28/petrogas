@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('api/user', 'App\Http\Controllers\Api\UserController@index');
+Route::get('api/user/{id}', 'App\Http\Controllers\Api\UserController@show');
