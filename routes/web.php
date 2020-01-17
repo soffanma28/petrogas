@@ -15,5 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('api/user', 'App\Http\Controllers\Api\UserController@index');
-Route::get('api/user/{id}', 'App\Http\Controllers\Api\UserController@show');
+// Route::get('api/user', 'App\Http\Controllers\Api\UserController@index');
+// Route::get('api/user/{id}', 'App\Http\Controllers\Api\UserController@show');
+
+Route::get('admin/item_request/create', 'Admin\ItemRequestController@index');
+Route::get('admin/item_request/create/dept', 'Admin\ItemRequestController@dept');
+

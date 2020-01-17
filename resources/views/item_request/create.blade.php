@@ -1,26 +1,20 @@
 @extends(backpack_view('layouts.top_left'))
 
-@php
-  $defaultBreadcrumbs = [
-    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
-    $crud->entity_name_plural => url($crud->route),
-    trans('backpack::crud.add') => false,
-  ];
-
-  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
-  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
-@endphp
-
 @section('header')
-	<section class="container-fluid">
-	  <h2>
-        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-        <!-- <small>{!! $crud->getSubheading() ?? trans('backpack::crud.add').' '.$crud->entity_name !!}.</small> -->
+	<nav aria-label="breadcrumb" class="d-none d-lg-block">
+	  	<ol class="breadcrumb bg-transparent justify-content-end p-0">
+		    <li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/dashboard">Admin</a></li>
+			<li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/item_request">Item Request</a></li>
+			<li class="breadcrumb-item text-capitalize active" aria-current="page">Add</li>
+		</ol>
+	</nav>
 
-        @if ($crud->hasAccess('list'))
-          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> Back</a></small>
-        @endif
-	  </h2>
+    <section class="container-fluid">
+	 	<h2>
+	        <span class="text-capitalize">Office Supply Request Form</span>
+	        <!-- <small>Add item.</small> -->
+			<small><a href="http://localhost:8000/admin/item_request" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> Back </a></small>
+    	</h2>
 	</section>
 @endsection
 
@@ -29,52 +23,111 @@
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<!-- Default box -->
-
-		@include('crud::inc.grouped_errors')
-
 		  <form method="post"
-		  		action="{{ url($crud->route) }}"
-				@if ($crud->hasUploadFields('create'))
-				enctype="multipart/form-data"
-				@endif
+		  		action=""
 		  		>
 			  {!! csrf_field() !!}
 
 		    <div class="row">
-		    	<div class="col-lg-8 col-md-12 col-sm-12">
-		    		<!-- load the view from the application if it exists, otherwise load the one in the package -->
-		      		@if(view()->exists('vendor.backpack.crud.form_content'))
-				      	@include('vendor.backpack.crud.form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
-				    @else
-				      	@include('crud::form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
-				    @endif
-		    	</div>
-		    	<div class="col-lg-4 col-md-12 col-sm-12">
+		    	<div class="col-lg-7 col-md-12 col-sm-12">
 		    		<div class="card">
 		    			<div class="card-body">
-		    				
+		    				<div class="form-group">
+		    					<label>Requestor</label>
+		    					<select class="form-control select" id="users" name="user_id">
+		    						<option value=""></option>
+		    						@foreach($users as $user)
+		    							<option value="{{ $user->id }}">{{ $user->id }} - {{$user->name}}</option>
+		    						@endforeach
+		    					</select>
+		    				</div>
+		    				<div class="form-group">
+		    					<label>Employee</label>
+		    					<select class="form-control select" id="employee" name="employee">
+		    						<option value=""></option>
+		    						@foreach($users as $user)
+		    							<option value="{{ $user->id }}">{{ $user->id }} - {{$user->name}}</option>
+		    						@endforeach
+		    					</select>
+		    				</div>
+		    				<div class="form-group">
+		    					<label>Department</label>
+		    					<input class="form-control" type="text" name="department" id="department">
+		    				</div>
+		    				<div class="form-group">
+		    					<label>Email</label>
+		    					<input class="form-control" type="email" name="email" id="email">
+		    				</div>
+		    				<div class="form-group">
+		    					<label>Request Date</label>
+		    					<div class="input-group date" data-provide="datepicker">
+								    <input type="text" class="form-control" value="{{Carbon\Carbon::today()->format('d-m-Y')}}" name="req_date" id="req_date">
+								    <div class="input-group-addon">
+								        <span class="glyphicon glyphicon-th"></span>
+								    </div>
+								</div>
+		    				</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    	<div class="col-lg-5 col-md-12 col-sm-12">
+		    		<div class="card">
+		    			<div class="card-body">
+		    				<div class="form-group">
+		    					<label>Type of Request</label>
+		    					<input class="form-control" type="text" name="typeof_request" id="typeof_request" value="Office Supply">
+		    				</div>
+		    				<div class="form-group">
+		    					<label>Status</label>
+		    					<input class="form-control" type="text" name="status" id="status" value="Ready">
+		    				</div>
+		    				<div class="form-group">
+		    					<label>Remark</label>
+		    					<textarea class="form-control textarea" type="text" name="remark" id="remark" value=""></textarea>
+		    				</div>
 		    			</div>
 		    		</div>
 		    	</div>
 		    	<div class="col-lg-12 col-md-12 col-sm-12">
 		    		<div class="card">
 		    			<div class="card-body">
-		    				<a href="{{ url($crud->route.'/create') }}" class="btn btn-primary" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
+		    				<a href="#" class="btn btn-primary" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
 		    				<table id="request_list" class="table mt-2">
 		    					<thead class="">
 		    						<tr>
 		    							<th>Name</th>
 		    							<th>Quantity Request</th>
-		    							<th>Current Quantity</th>
+		    							<th>Quantity Actual</th>
 		    							<th>Action</th>
 		    						</tr>
 		    					</thead>
 		    					<tbody>
 		    						<tr>
-		    							<td>test</td>
-		    							<td>test</td>
-		    							<td>test</td>
-		    							<td>test</td>
+		    							<td>
+		    								<div class="form-group">
+						    					<select class="form-control select" id="users" name="user_id">
+						    						<option></option>
+						    						<option value="">test1</option>
+						    						<option value="">test2</option>
+						    						<option value="">test3</option>
+						    					</select>
+						    				</div>
+		    							</td>
+		    							<td>
+		    								<div class="form-group">
+						    					<input class="form-control" type="text" name="qty_request" id="qty_request">
+						    				</div>
+		    							</td>
+		    							<td>
+		    								<div class="form-group">
+						    					<input class="form-control" type="text" name="qty_act" id="qty_act">
+						    				</div>
+		    							</td>
+		    							<td>
+		    								<a href="#">
+		    									<i class="fa fa-trash fa-lg mt-2"></i>
+		    								</a>
+		    							</td>
 		    						</tr>
 		    					</tbody>
 		    				</table>
@@ -85,27 +138,18 @@
 
 	          <div id="saveActions" class="form-group">
 
-			    <input type="hidden" name="save_action" value="{{ $saveAction['active']['value'] }}">
+			    <input type="hidden" name="save_action" value="">
 
 			    <div class="btn-group" role="group">
 
 			        <button type="submit" class="btn btn-success">
 			            <span class="fa fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
-			            <span data-value="{{ $saveAction['active']['value'] }}">{{ $saveAction['active']['label'] }}</span>
+			            <span data-value="">Save & Approval</span>
 			        </button>
-
-			        <div class="btn-group" role="group">
-			            <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
-			            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-			                @foreach( $saveAction['options'] as $value => $label)
-			                <a class="dropdown-item" href="javascript:void(0);" data-value="{{ $value }}">{{ $label }}</a>
-			                @endforeach
-			            </div>
-			          </div>
 
 			    </div>
 
-			    <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-default"><span class="fa fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+			    <a href="{{ url()->previous() }}" class="btn btn-default"><span class="fa fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
 			</div>
 
 		  </form>
@@ -113,3 +157,45 @@
 </div>
 
 @endsection
+
+@section('after_scripts')
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			$('#req_date').datepicker();
+
+
+			$('#users').change(function(){
+			    var user_id = $('#users').val();
+			    $('#department').val("Department");
+			    $('#email').val("name@email.com");
+
+		        // $.ajax({
+		        //     type: 'POST',
+		        //     headers: {
+		        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		        //     }
+		        //     url: '/admin/item_request/create/dept',
+		        //     data: {
+		        //         id: user_id
+		        //     },
+		        //     dataType: 'json',
+		        //     success: function(data) {
+		        //     	console.log(data);
+		        //     },
+		        //     error: function(data) {
+		        //         var errors = $.parseJSON(data.responseText);
+		        //         console.log(errors);
+		        //     }
+		        // });
+			});
+		});
+	</script>
+
+@stop
+
+
+
+
+
