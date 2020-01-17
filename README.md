@@ -21,6 +21,19 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## How to run locally
+
+1. Git Clone project on your web server ( Git clone https://github.com/soffandluffy/petrogas.git )
+2. Open terminal
+3. Change directory to the project
+4. Run Composer install
+5. Copy file .env.example and rename it to .env ( cp .env.example .env )
+6. Open file .env in your text editor and set database, host, and password
+7. Run php artisan migrate 
+8. Run php artisan db:seed
+9. Run php artisan key:generate
+10. To run it in your browser just ( Run php artisan ser ) in your terminal and open in your browser ( localhost:8000 )
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
