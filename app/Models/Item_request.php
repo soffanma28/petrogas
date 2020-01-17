@@ -19,9 +19,12 @@ class Item_request extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['user_id', 'req_date', 'status', 'remark'];
+    protected $fillable = ['user_id', 'req_date', 'status', 'remark', 'items'];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $casts = [
+        'items' => 'array',
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -59,4 +62,5 @@ class Item_request extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    
 }

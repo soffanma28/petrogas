@@ -18,6 +18,7 @@ class CreateItemRequestsTable extends Migration
             $table->datetime('req_date')->useCurrent();
             $table->string('status');
             $table->string('remark')->nullable();
+            $table->text('items')->nullable();
             $table->timestamps();
         });
     }
