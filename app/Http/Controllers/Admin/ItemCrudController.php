@@ -24,6 +24,8 @@ class ItemCrudController extends CrudController
         $this->crud->setModel('App\Models\Item');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/item');
         $this->crud->setEntityNameStrings('item', 'items');
+        // Show export to PDF, CSV, XLS and Print buttons on the table view. Please note it will only export the current _page_ of results. So in order to export all entries the user needs to make the current page show "All" entries from the top-left picker.
+        $this->crud->enableExportButtons();
     }
 
     protected function setupListOperation()
