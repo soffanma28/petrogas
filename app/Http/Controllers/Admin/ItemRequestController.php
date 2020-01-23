@@ -50,7 +50,7 @@ class ItemRequestController extends Controller
 
     public function store(Request $request){
 
-        // dd($request->input('employee'));
+        // dd($request->input('qty_request'));
         $emp = [];
         foreach ($request->input('employee') as $key => $value) {
             $emp[$key] = ['empid' => $value, 'empname' => Employee::where('employee_id',$value)->first()->name];
@@ -100,11 +100,13 @@ class ItemRequestController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->passes()) {
+            $req_id = $itemrequest->id;
             foreach ($request->input('items') as $key => $value) {
+
                 Item_request_detail::create([
-                    'req_id' => $itemrequest->id,
+                    'req_id' => $req_id,
                     'item_id' => $value,
-                    'qty' => $request->input('qty_request.'.$key),
+                    'qty_request' => $request->input('qty_request.'.$key),
                 ]);
             }
         }
@@ -122,6 +124,31 @@ class ItemRequestController extends Controller
         }
         return redirect()->route('item_request.index');
 
+    }
+
+    public function edit($id){
+
+        $itemrequest = Item_request::find($id);
+        $employees = Employee::all();
+        $items = Item::all();
+        $categories = Item_category::all();
+
+        return view('item_request.create', compact('itemrequest','employees', 'items', 'categories'));
+
+    }
+
+    public function draft($id){
+
+        Item_request::find($id)->update(['status' => 'Draft', 'req_date' => null]);
+        \Alert::success('Request drafted')->flash();
+        return redirect()->route('item_request.index');
+
+    }
+
+    public function request($id){
+        Item_request::find($id)->update(['status' => 'Requested', 'req_date' => Carbon::now()]);
+        \Alert::success('Request submitted')->flash();
+        return redirect()->route('item_request.index'); 
     }
 
 

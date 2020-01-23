@@ -34,7 +34,7 @@
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
               @if ($crud->hasAccess('create'))
-                <a href="{{ url($crud->route.'/create') }}" class="btn btn-primary" data-style="zoom-in"><span class="ladda-label"><i class="fa fa-plus"></i> Request Item</span></a>
+                <a href="{{ url($crud->route.'/create') }}" class="btn btn-primary" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> Request Item</span></a>
               @endif
 
             </div>

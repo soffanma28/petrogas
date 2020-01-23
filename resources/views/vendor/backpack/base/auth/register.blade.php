@@ -46,14 +46,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="{{ backpack_authentication_email() }}">{{ config('backpack.base.authentication_column_email') }}</label>
+                            <label class="control-label" for="{{ config('backpack.base.authentication_email') }}">{{ config('backpack.base.authentication_column_email') }}</label>
 
                             <div>
-                                <input type="{{ backpack_authentication_email()=='email'?'email':'text'}}" class="form-control{{ $errors->has(backpack_authentication_email()) ? ' is-invalid' : '' }}" name="{{ backpack_authentication_email() }}" id="{{ backpack_authentication_email() }}" value="{{ old(backpack_authentication_email()) }}">
+                                <input type="{{ config('backpack.base.authentication_email')=='email'?'email':'text'}}" class="form-control{{ $errors->has(config('backpack.base.authentication_email')) ? ' is-invalid' : '' }}" name="{{ config('backpack.base.authentication_email') }}" id="{{ config('backpack.base.authentication_email') }}" value="{{ old(config('backpack.base.authentication_email')) }}">
 
-                                @if ($errors->has(backpack_authentication_email()))
+                                @if ($errors->has(config('backpack.base.authentication_email')))
                                     <span class="invalid-feedback">
-                                        <strong>{{ $errors->first(backpack_authentication_email()) }}</strong>
+                                        <strong>{{ $errors->first(config('backpack.base.authentication_email')) }}</strong>
                                     </span>
                                 @endif
                             </div>

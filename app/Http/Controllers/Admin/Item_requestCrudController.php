@@ -28,6 +28,7 @@ class Item_requestCrudController extends CrudController
         $this->crud->setModel('App\Models\Item_request');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/item_request');
         $this->crud->setEntityNameStrings('item_request', 'item_requests');
+        $this->crud->enableExportButtons();
     }
 
     protected function setupListOperation()
@@ -47,6 +48,7 @@ class Item_requestCrudController extends CrudController
         $this->crud->addColumn(['name' => 'req_date', 'type' => 'datetime', 'label' => 'Request Date']);
         $this->crud->addColumn(['name' => 'typeofrequest', 'type' => 'text', 'label' => 'Type of Request']);
         $this->crud->addColumn(['name' => 'status', 'type' => 'text', 'label' => 'Status']);
+        $this->crud->addButtonFromView('line', 'status_update', 'status_update', 'beginning');
         $this->crud->setListView('item_request.list');
 
     }
@@ -125,7 +127,10 @@ class Item_requestCrudController extends CrudController
     protected function setupShowOperation()
     {
         $this->crud->set('show.setFromDb', false);
+        $this->crud->setShowContentClass('col-md-8');
+        $this->crud->setShowView('item_request.show');
 
+        // COLUMN 
         $this->crud->addColumn([
            // 1-n relationship
            'label' => "Requestor", // Table column heading
@@ -144,7 +149,6 @@ class Item_requestCrudController extends CrudController
            'attribute' => "name", // foreign key attribute that is shown to user
            'model' => "App\Models\BackpackUser", // foreign key model
         ]);
-        // $this->crud->addColumn(['name' => 'employee', 'type' => 'text', 'label' => 'Employee']);
         $this->crud->addColumn([
           'name' => 'employee',
           'type' => 'employee',
@@ -152,15 +156,11 @@ class Item_requestCrudController extends CrudController
         ]);
         $this->crud->addColumn(['name' => 'req_date', 'type' => 'datetime', 'label' => 'Request Date']);
         $this->crud->addColumn(['name' => 'remark', 'type' => 'text', 'label' => 'Remark']);
+        // $this->crud->addColumn(['name' => 'status', 'type' => 'text', 'label' => 'Status']);
         $this->crud->addColumn(['name' => 'id', 'type' => 'itemlist', 'label' => 'Item list']);
-    }
 
-    public function show($id){
-      // custom logic before
-      $content = $this->traitShow($id);
+        // BUTTON
 
-      // cutom logic after
-      return $content;
     }
 
 }
