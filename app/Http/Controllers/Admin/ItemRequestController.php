@@ -4,17 +4,36 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
+use App\Models\User;
+use App\Models\Item;
+use App\Models\Item_request;
+use App\Models\Item_request_detail;
+use App\Models\Item_category;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Validator;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
+
 
 class ItemRequestController extends Controller
 {
-    //
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+
     public function index(){
 
-    	$users = User::all();
 
-    	return view('item_request.create', compact('users'));
+        return view('item_request.list');
+
+    }
+
+    public function create(){
+
+    	$employees = Employee::all();
+        $items = Item::all();
+        $categories = Item_category::all();
+
+    	return view('item_request.create', compact('employees', 'items', 'categories'));
 
     }
 
@@ -28,5 +47,82 @@ class ItemRequestController extends Controller
 
 
     }
+
+    public function store(Request $request){
+
+        // dd($request->input('employee'));
+        $emp = [];
+        foreach ($request->input('employee') as $key => $value) {
+            $emp[$key] = ['empid' => $value, 'empname' => Employee::where('employee_id',$value)->first()->name];
+        }
+        $validate = $request->validate([
+            'employee' => 'required',
+            'typeofrequest' => 'required',
+            'status' => 'required',
+            'remark' => 'required',
+            'items' => 'required',
+            'qty_request' => 'required',
+        ]);
+
+        switch ($request->input('action')) {
+            case 'draft':
+            $itemrequest = Item_request::create([
+                'requestor_id' => $request->input('requestor_id'),
+                'employee' => $emp,
+                'status' => 'Draft',
+                'typeofrequest' => $request->input('typeofrequest'),
+                'remark' => $request->input('remark')
+            ]);
+                break;
+            case 'saveprove':
+            $itemrequest = Item_request::create([
+                'requestor_id' => $request->input('requestor_id'),
+                'employee' => $emp,
+                'status' => 'Requested',
+                'typeofrequest' => $request->input('typeofrequest'),
+                'remark' => $request->input('remark')
+            ]);
+
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        $rules = [];
+        foreach ($request->input('items') as $key => $value) {
+            $rules["items.{$key}"] = 'required';
+        }
+        foreach ($request->input('qty_request') as $key => $value) {
+            $rules["qty_request.{$key}"] = 'required';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes()) {
+            foreach ($request->input('items') as $key => $value) {
+                Item_request_detail::create([
+                    'req_id' => $itemrequest->id,
+                    'item_id' => $value,
+                    'qty' => $request->input('qty_request.'.$key),
+                ]);
+            }
+        }
+
+        switch ($request->input('action')) {
+            case 'draft':
+            \Alert::success('Request drafted')->flash();
+                break;
+            case 'saveprove':
+            \Alert::success('Request submitted')->flash();
+                break;
+            default:
+                # code...
+                break;
+        }
+        return redirect()->route('item_request.index');
+
+    }
+
 
 }

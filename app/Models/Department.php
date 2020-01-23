@@ -35,7 +35,7 @@ class Department extends Model
     |--------------------------------------------------------------------------
     */
     public function user(){
-        return $this->hasMany('App\Models\User', 'id', 'department_id');
+        return $this->hasMany('App\Models\BackpackUser', 'id', 'department_id');
     }
 
     /*
