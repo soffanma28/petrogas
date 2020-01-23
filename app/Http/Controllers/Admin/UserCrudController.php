@@ -70,7 +70,7 @@ class UserCrudController extends CrudController
             'name' => 'role',
             'label' => "Role",
             'type' => 'select2_from_array',
-            'options' => ['Admin' => 'Admin', 'Manager' => 'Manager', 'User' => 'User'],
+            'options' => ['Admin' => 'Admin', 'Manager' => 'Manager', 'User' => 'User', 'Requestor' => 'Requestor', 'Manager' => 'Manager', 'GA Admin' => 'GA Admin', 'GA Manager' => 'GA Manager'],
             'allows_null' => false,
             'default' => 'User',
             // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;

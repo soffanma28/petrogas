@@ -53,14 +53,16 @@ return [
         'packages/source-sans-pro/source-sans-pro.css',
         'packages/line-awesome/css/line-awesome.min.css',
         'packages/chart/Chart.min.css',
-        'packages/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
+        'packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
+        'packages/select2/dist/css/select2.css',
 
         // Example (the fonts above, loaded from CDN instead)
         // 'https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css',
         // 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic',
 
         // Example (load font-awesome instead of line-awesome):
-        // 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css',
+        // 'packages/fontawesome-5.12.0/all.min.css',
+        'https://pro.fontawesome.com/releases/v5.12.0/js/all.js',
     ],
 
     // CSS files that are loaded in all pages, using Laravel's mix() helper
@@ -125,6 +127,7 @@ return [
         'packages/backpack/base/js/bundle.js',
         'packages/chart/Chart.min.js',
         'packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+        'packages/select2/dist/js/select2.full.js',
 
         // examples (everything inside the bundle, loaded from CDN)
         // 'https://code.jquery.com/jquery-3.4.1.min.js',
@@ -139,6 +142,7 @@ return [
         // 'https://unpkg.com/vue@2.4.4/dist/vue.min.js',
         // 'https://unpkg.com/react@16/umd/react.production.min.js',
         // 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+        'packages/fontawesome-5.12.0/all.min.js',
     ],
 
     // JS files that are loaded in all pages, using Laravel's mix() helper

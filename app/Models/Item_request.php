@@ -19,11 +19,12 @@ class Item_request extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['user_id', 'req_date', 'status', 'remark', 'items'];
+    protected $fillable = ['requestor_id','employee','approver_id', 'req_date', 'status','typeofrequest', 'remark'];
     // protected $hidden = [];
     // protected $dates = [];
     protected $casts = [
         'items' => 'array',
+        'employee' => 'array',
     ];
 
     /*
@@ -37,8 +38,16 @@ class Item_request extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user(){
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    public function requestor(){
+        return $this->hasOne('App\Models\BackpackUser', 'id', 'requestor_id');
+    }
+
+    public function approver(){
+        return $this->hasOne('App\Models\BackpackUser', 'id', 'approver_id');
+    }
+
+    public function employee(){
+        return $this->hasMany('App\Models\Employee', 'id', 'employee');
     }
 
     public function details(){
