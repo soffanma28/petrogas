@@ -19,7 +19,7 @@ class Item_request_detail extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['req_id', 'item_id', 'qty'];
+    protected $fillable = ['req_id', 'item_id', 'qty_request'];
     // protected $hidden = [];
     // protected $dates = [];
 

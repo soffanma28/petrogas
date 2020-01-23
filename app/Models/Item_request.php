@@ -19,7 +19,7 @@ class Item_request extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['requestor_id','employee','approver_id', 'req_date', 'status','typeofrequest', 'remark'];
+    protected $fillable = ['requestor_id','employee','approver_id','on_process_id','ready_id','complete_id', 'req_date','approve_date','process_date','ready_date','complete_date', 'status','typeofrequest', 'remark'];
     // protected $hidden = [];
     // protected $dates = [];
     protected $casts = [

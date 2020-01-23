@@ -96,6 +96,10 @@ class BackpackUser extends User
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
     }
 
+    public function approver(){
+        return $this->belongsTo('App\Models\BackpackUser', 'approver_id', 'id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

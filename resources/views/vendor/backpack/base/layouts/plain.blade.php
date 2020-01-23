@@ -33,9 +33,11 @@
   @yield('content')
   </div>
 
+@unless(request()->is('admin/login') || request()->is('admin/register'))
   <footer class="app-footer sticky-footer text-white">
     @include('backpack::inc.footer')
   </footer>
+@endunless
 
   @yield('before_scripts')
   @stack('before_scripts')

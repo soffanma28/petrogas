@@ -5,7 +5,7 @@
 	  	<ol class="breadcrumb bg-transparent justify-content-end p-0">
 		    <li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/dashboard">Admin</a></li>
 			<li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/item_request">Item Request</a></li>
-			<li class="breadcrumb-item text-capitalize active" aria-current="page">Add</li>
+			<li class="breadcrumb-item text-capitalize active" aria-current="page">Edit</li>
 		</ol>
 	</nav>
 
@@ -39,7 +39,7 @@
 				        </button>
 
 	    				<button type="submit" name="action" value="saveprove" class="btn btn-success">
-				            <span class="far fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
+				            <span class="fas fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
 				            <span data-value="">Save & Approval</span>
 				        </button>
 
@@ -51,8 +51,8 @@
 		    			<div class="card-body">
 		    				<div class="form-group">
 		    					<label>Requestor</label>
-		    					<input class="form-control" type="text" name="requestor_id" value="{{backpack_user()->id}}" hidden>
-		    					<input class="form-control" type="text" name="requestor" value="{{backpack_user()->id}} -- {{backpack_user()->name}}" disabled>
+		    					<input class="form-control" type="text" name="requestor_id" value="{{$itemrequest->requestor_id}}" hidden>
+		    					<input class="form-control" type="text" name="requestor" value="{{$itemrequest->requestor_id}} -- {{$itemrequest->requestor->name}}" disabled>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Employee</label>
@@ -64,16 +64,16 @@
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Department</label>
-		    					<input class="form-control" type="text" name="department" id="department" value="{{ backpack_user()->department->name }}" disabled>
+		    					<input class="form-control" type="text" name="department" id="department" value="{{ $itemrequest->requestor->department->name }}" disabled>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Email</label>
-		    					<input class="form-control" type="email" name="email" id="email" value="{{ backpack_user()->email }}" disabled>
+		    					<input class="form-control" type="email" name="email" id="email" value="{{ $itemrequest->requestor->email }}" disabled>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Request Date</label>
 		    					<div class="input-group date" data-provide="datepicker">
-								    <input type="text" class="form-control" value="{{Carbon\Carbon::today()->format('d/m/Y')}}" name="req_date" id="req_date">
+								    <input type="text" class="form-control" value="{{$itemrequest->req_date}}" name="req_date" id="req_date">
 								    <div class="input-group-addon">
 								        <span class="glyphicon glyphicon-th"></span>
 								    </div>
@@ -89,7 +89,11 @@
 		    					<label>Type Of Request</label>
 		    					<select class="form-control select" id="category" name="typeofrequest">
 		    						@foreach($categories as $category)
-		    							<option value="{{ $category->name }}">{{$category->name}}</option>
+		    							@if($category->name == $itemrequest->typeofrequest)
+										<option value="{{ $category->name }}" selected>{{$category->name}}</option>
+										@else
+										<option value="{{ $category->name }}" selected>{{$category->name}}</option>
+		    							@endif
 		    						@endforeach
 		    					</select>
 		    				</div>
@@ -107,7 +111,7 @@
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Remark</label>
-		    					<textarea class="form-control textarea" type="text" name="remark" id="remark" value=""></textarea>
+		    					<textarea class="form-control textarea" type="text" name="remark" id="remark" value="{{$itemrequest->remark}}"></textarea>
 		    				</div>
 		    			</div>
 		    		</div>

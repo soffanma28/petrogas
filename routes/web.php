@@ -29,6 +29,8 @@ Route::group([
 		Route::get('create', 'Admin\ItemRequestController@create')->name('item_request.create');
 		Route::get('create/dept', 'Admin\ItemRequestController@dept');
 		Route::post('store', 'Admin\ItemRequestController@store')->name('item_request.store');
+		Route::post('{id}/draft', 'Admin\ItemRequestController@draft')->name('item_request.draft');
+		Route::post('{id}/request', 'Admin\ItemRequestController@request')->name('item_request.request');
 		// Route::post('storeitem', 'Admin\ItemRequestController@storeitem')->name('item_list.store');
 	});
 
