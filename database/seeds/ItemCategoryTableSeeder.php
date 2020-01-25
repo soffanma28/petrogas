@@ -12,5 +12,10 @@ class ItemCategoryTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('departments')->insert([
+            'name' => 'Stationary Supply',
+            'name' => 'Computer Supply',
+            'name' => 'Canteen Supply'
+        ]);
     }
 }

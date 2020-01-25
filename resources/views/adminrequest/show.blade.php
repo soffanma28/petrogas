@@ -56,7 +56,7 @@
 	#progressbar li {
 	    list-style-type: none;
 	    font-size: 13px;
-	    width: 20%;
+	    width: 33%;
 	    float: left;
 	    position: relative;
 	    font-weight: 400
@@ -235,17 +235,15 @@
 			</table>
 	    </div><!-- /.box-body -->
 	    @php
-			$status = data_get($entry, 'status');
-			$requestor = data_get($entry, 'requestor');
+			$adminstatus = data_get($entry, 'adminstatus');
+			$itemrequest = data_get($entry, 'itemrequest');
+			$status = $itemrequest->status;
+			$requestor = $itemrequest->requestor->name;
 			$approver = data_get($entry, 'approver');
-			$on_process = data_get($entry, 'on_process');
-			$ready = data_get($entry, 'ready');
 			$complete = data_get($entry, 'complete');
-			$req_date = data_get($entry, 'req_date');
-			$approve_date = data_get($entry, 'approve_date');
-			$process_date = data_get($entry, 'process_date');
-			$ready_date = data_get($entry, 'ready_date');
-			$complete_date = data_get($entry, 'complete_date');
+			$req_date = $itemrequest->req_date;
+			$approve_date = data_get($entry, 'adminprove_date');;
+			$complete_date = data_get($entry, 'admincomplete_date');
 	    @endphp
 	    <div class="col-lg-12 col-md-12 col-sm-12 pl-0 pr-0">
 		    <div class="card cardprogress">
@@ -253,10 +251,10 @@
 		            <div class="col-12">
 		                <ul id="progressbar" class="text-center">
 		                		<!-- REQUESTED -->
-		                	@if($status == 'Requested') 
+		                	@if($status == 'Approved') 
 								<li class="active check step0">
 			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
-			                    	<p class="mb-1">{{ $requestor->name }}</p>
+			                    	<p class="mb-1">{{ $requestor }}</p>
 			                    	<p class="">
 			                    		@if($req_date!='null')
 			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $req_date)->format('d F Y H:i:s')}} 
@@ -269,20 +267,14 @@
 			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Approved</p>
 			                    </li>
 			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
-			                    </li>
-			                    <li class="round step0">
 			                    	<p class="font-weight-bold">Completed</p>
 			                    </li>
 			                    <!-- END REQUESTED -->
 			                    <!-- APPROVED -->
-		                	@elseif($status == 'Approved')
+		                	@elseif($adminstatus == 'Approved')
 								<li class="active check step0">
 			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
-			                    	<p class="mb-1">{{ $requestor->name }}</p>
+			                    	<p class="mb-1">{{ $requestor }}</p>
 			                    	<p class="">
 			                    		@if($req_date!='null')
 			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $req_date)->format('d F Y H:i:s')}} 
@@ -301,64 +293,16 @@
 			                    			{{$approve_date}}
 			                    		@endif
 			                    	</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
 			                    </li>
 			                    <li class="round step0">
 			                    	<p class="font-weight-bold">Completed</p>
 			                    </li>
 			                    <!-- END APPROVED -->
 			                    <!-- ON PROCESS -->
-		                	@elseif($status == 'On Process')
+		                	@elseif($adminstatus == 'Completed')
 								<li class="active check step0">
 			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
-			                    	<p class="mb-1">{{ $requestor->name }}</p>
-			                    	<p class="">
-			                    		@if($req_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $req_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$req_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Approved</p>
-			                    	<p class="mb-1">{{ $approver->name }}</p>
-			                    	<p class="">
-										@if($approve_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $approve_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$approve_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-			                    	<p class="mb-1">{{ $on_process->name }}</p>
-			                    	<p class="">
-			                    		@if($process_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $process_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$process_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold">Completed</p>
-			                    </li>
-			                    <!-- END ON PROCESS -->
-			                    <!-- READY -->
-		                	@elseif($status == 'Ready')
-								<li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
-			                    	<p class="mb-1">{{ $requestor->name }}</p>
+			                    	<p class="mb-1">{{ $requestor }}</p>
 			                    	<p class="">
 			                    		@if($req_date!='null')
 			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $req_date)->format('d F Y H:i:s')}} 
@@ -375,78 +319,6 @@
 			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $approve_date)->format('d F Y H:i:s')}} 
 			                    		@else 
 			                    			{{$approve_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-			                    	<p class="mb-1">{{ $on_process->name }}</p>
-			                    	<p class="">
-			                    		@if($process_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $process_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$process_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
-			                    	<p class="mb-1">{{ $ready->name }}</p>
-			                    	<p class="">
-			                    		@if($ready_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ready_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$ready_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold">Completed</p>
-			                    </li>
-			                    <!-- END READY -->
-			                    <!-- COMPLETED -->
-		                	@elseif($status == 'Completed')
-								<li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
-			                    	<p class="mb-1">{{ $requestor->name }}</p>
-			                    	<p class="">
-			                    		@if($req_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $req_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$req_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Approved</p>
-			                    	<p class="mb-1">{{ $approver->name }}</p>
-			                    	<p class="">
-			                    		@if($approve_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $approve_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$approve_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-			                    	<p class="mb-1">{{ $on_process->name }}</p>
-			                    	<p class="">
-			                    		@if($process_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $process_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$process_date}}
-			                    		@endif
-			                    	</p>
-			                    </li>
-			                    <li class="active check step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
-			                    	<p class="mb-1">{{ $ready->name }}</p>
-			                    	<p class="">
-			                    		@if($ready_date!='null')
-			                    			{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ready_date)->format('d F Y H:i:s')}} 
-			                    		@else 
-			                    			{{$ready_date}}
 			                    		@endif
 			                    	</p>
 			                    </li>
@@ -469,12 +341,6 @@
 			                    </li>
 			                    <li class="round step0">
 			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Approved</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-			                    </li>
-			                    <li class="round step0">
-			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
 			                    </li>
 			                    <li class="round step0">
 			                    	<p class="font-weight-bold">Completed</p>

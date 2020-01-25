@@ -7,12 +7,15 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\CRUD\app\Models\Traits\InheritsRelationsFromParentModel;
 use Backpack\CRUD\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 
 class BackpackUser extends User
 {
     use CrudTrait;
     use InheritsRelationsFromParentModel;
     use Notifiable;
+    use HasRoles;
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +33,7 @@ class BackpackUser extends User
      * @var array
      */
     protected $fillable = [
-        'department_id', 'name', 'username', 'email', 'password', 'role'
+        'department_id', 'name', 'username', 'email', 'password',
     ];
 
     /**
@@ -94,6 +97,10 @@ class BackpackUser extends User
 
     public function employee(){
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
+    }
+
+    public function request_employee(){
+        return $this->hasOne('App\Models\Employee', 'id', 'requestor_id');
     }
 
     public function approver(){

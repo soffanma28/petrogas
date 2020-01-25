@@ -2,6 +2,11 @@
 
 @section('after_styles')
 	<link rel="stylesheet" href="{{ asset('packages/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+	<style type="text/css">
+		.select2 {
+			width: 100% !important;
+		}
+	</style>
 @stop
 
 @section('header')
@@ -28,7 +33,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<!-- Default box -->
 		  <form method="post"
-		  		action="{{ route('item_request.store') }}"
+		  		action="{{ route('item_request.processed', $adminrequest->id) }}"
 		  		>
 			  {!! csrf_field() !!}
 
@@ -37,14 +42,14 @@
 		    		<div id="saveActions" class="form-group">
 						
 					    <input type="hidden" name="save_action" value="">
-	    				 <button type="submit" name="action" value="draft" class="btn btn-success">
+	    				<!-- <button type="submit" name="action" value="draft" class="btn btn-success">
 				            <span class="far fa-envelope" role="presentation" aria-hidden="true"></span> &nbsp;
 				            <span data-value="">Draft</span>
-				        </button>
+				        </button> -->
 
-	    				<button type="submit" name="action" value="saveprove" class="btn btn-success">
+	    				<button type="submit" name="action" value="proprove" class="btn btn-success">
 				            <span class="far fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
-				            <span data-value="">Save & Approval</span>
+				            <span data-value="">Process & Approval</span>
 				        </button>
 
 	    				 <a href="{{ url()->previous() }}" class="btn btn-default"><span class="fas fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
@@ -55,29 +60,29 @@
 		    			<div class="card-body">
 		    				<div class="form-group">
 		    					<label>Requestor</label>
-		    					<input class="form-control" type="text" name="requestor_id" value="{{backpack_user()->id}}" hidden>
-		    					<input class="form-control" type="text" name="requestor" value="{{backpack_user()->id}} -- {{backpack_user()->name}}" disabled>
+		    					<input class="form-control" type="text" name="requestor_id" value=" {{$itemrequest->requestor->id}}" hidden>
+		    					<input class="form-control" type="text" name="requestor" value=" {{$itemrequest->requestor->id}} -- {{$itemrequest->requestor->name}}" disabled>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Employee</label>
-		    					<select class="form-control" id="employee" name="employee[]" multiple="multiple">
-		    						@foreach($employees as $employee)
-		    							<option value="{{ $employee->employee_id }}">{{ $employee->employee_id }} - {{$employee->name}}</option>
+		    					<select class="form-control" id="employee" name="employee[]" multiple="multiple" disabled>
+		    						@foreach($itemrequest->employee as $employee)
+		    							<option value="{{ $employee['empid'] }}" selected>{{ $employee['empid'] }} - {{$employee['empname']}}</option>
 		    						@endforeach
 		    					</select>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Department</label>
-		    					<input class="form-control" type="text" name="department" id="department" value="{{ backpack_user()->department->name }}" disabled>
+		    					<input class="form-control" type="text" name="department" id="department" value="{{ $itemrequest->requestor->department->name }}" disabled>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Email</label>
-		    					<input class="form-control" type="email" name="email" id="email" value="{{ backpack_user()->email }}" disabled>
+		    					<input class="form-control" type="email" name="email" id="email" value="{{ $itemrequest->requestor->email }}" disabled>
 		    				</div>
 		    				<div class="form-group" >
 							    <label>Request Date</label>
 							    <div class="input-group date" id="reqdatetimepicker">
-							        <input type="text" class="form-control" name="req_date" value="{{Carbon\Carbon::now()->format('d/m/Y H:i:s')}}">
+							        <input type="text" id="reqdate" class="form-control" name="req_date" value="{{$itemrequest->req_date->format('d F Y H:m:i')}}" disabled>
 							        <span class="input-group-addon input-group-text">
 				                        <span class="far fa-calendar"></span>
 				                    </span>
@@ -91,27 +96,19 @@
 		    			<div class="card-body">
 		    				<div class="form-group">
 		    					<label>Type Of Request</label>
-		    					<select class="form-control select" id="category" name="typeofrequest">
-		    						@foreach($categories as $category)
-		    							<option value="{{ $category->name }}">{{$category->name}}</option>
-		    						@endforeach
+		    					<select class="form-control select" id="category" name="typeofrequest" disabled>
+		    						<option value="{{ $itemrequest->typeofrequest }}">{{$itemrequest->typeofrequest}}</option>
 		    					</select>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Status</label>
-		    					<select class="form-control select" id="status" name="status">
-		    						<option value="Draft" selected>Draft</option>
-		    						<option value="Requested">Requested</option>
-		    						<option value="Approval">Approval</option>
-		    						<option value="Approved">Approved</option>
-		    						<option value="On Process">On Process</option>
-		    						<option value="Ready">Ready</option>
-		    						<option value="Completed">Completed</option>
+		    					<select class="form-control select" id="status" name="status" disabled>
+		    						<option value="{{$itemrequest->status}}" selected>{{$itemrequest->status}}</option>
 		    					</select>
 		    				</div>
 		    				<div class="form-group">
 		    					<label>Remark</label>
-		    					<textarea class="form-control textarea" type="text" name="remark" id="remark" value=""></textarea>
+		    					<textarea class="form-control textarea" type="text" name="remark" id="remark" disabled>{{$itemrequest->remark}}</textarea>
 		    				</div>
 		    			</div>
 		    		</div>
@@ -124,36 +121,44 @@
 		    					<table id="request_list" class="table mt-2 mb-0">
 			    					<thead class="">
 			    						<tr>
-			    							<th>Item name -- Quantity</th>
+			    							<th>Item name</th>
 			    							<th>Quantity Request</th>
+			    							<th>Unit Cost</th>
 			    							<th>Action</th>
 			    						</tr>
 			    					</thead>
 			    					<tbody id="reqbody">
+			    						@foreach($itemdetail as $item)
 			    						<tr>
-			    							<td style="width: 60%" class="pb-0">
+			    							<td style="width: 50%" class="pb-0">
 			    								<div class="form-group">
-							    					<select class="form-control select2 item_list" name="items[]">
-							    						@foreach($items as $item)
-															<option value="{{$item->id}}">{{$item->name}} -- {{$item->qty}}</option>
-							    						@endforeach
+							    					<select class="form-control select2 item_list" name="items[]" disabled>
+							    						
+															<option value="{{$item->item->id}}">{{$item->item->name}}</option>
+							    						
 							    					</select>
 							    				</div>
 			    							</td>
 			    							<td>
 			    								<div class="form-group mb-1">
-							    					<input class="form-control qty_list" type="text" name="qty_request[]">
+							    					<input class="form-control qty_list" type="text" name="qty_request[]" value="{{$item->qty_request}}" disabled>
 							    				</div>
 			    							</td>
 			    							<td>
-			    								<a href="javascript:void(0)">
-			    									<i class="fas fa-trash fa-lg mt-2 removeitem"></i>
-			    								</a>
+			    								<div class="form-group mb-1">
+			    									@php
+													$price = $item->qty_request * $item->item->price;
+			    									@endphp
+							    					<input class="form-control" type="text" name="price[]" value="{{$price}}" disabled>
+							    				</div>
+			    							</td>
+			    							<td>
 			    							</td>
 			    						</tr>
+			    						@endforeach
 			    					</tbody>
 			    				</table>
-			    				<a href="javascript:void(0)" class="btn btn-primary" id="additem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
+			    				<!-- <a href="javascript:void(0)" class="btn btn-primary" id="additem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a> -->
 		    				</div>
 		    				
 		    			</div>
@@ -218,9 +223,10 @@
 
 		$(document).ready(function(){
 
-      		$('#employee').select2();
+	        var selectedValues = $("#employee").val();
+	        $('#employee').val(selectedValues).trigger('change');
+	        $('#employee').select2();
       		$('.item_list').select2();
-      		// $('#item').select2();
       		$('#reqdatetimepicker').datetimepicker({
       			allowInputToggle : true,
       			format : 'DD/MM/Y H:mm:ss',
@@ -236,23 +242,25 @@
 		            close: 'fas fa-ban'
 		        }
       		});
-
+      		$('#reqdate').val('{{$itemrequest->req_date->format("d F Y H:m:i")}}');
       		var i = 1;
       		$('#additem').click(function () {
       			i++;
       			$('#reqbody').append('<tr id="row'+i+'" class="req_added">' +
       				'<td style="width: 60%" class="pb-0">' +
 						'<div class="form-group">' +
-	    					'<select class="form-control select2 item_list" name="items[]">' +
-	    						@foreach($items as $item)
-	    							'<option value="{{$item->id}}">{{$item->name}} -- {{$item->qty}}</option>' +
-	    						@endforeach
+							@foreach($itemdetail as $item)
+	    					'<select class="form-control select2 item_list" name="items[]" disabled>' +
+	    							'<option value="{{$item->item->id}}">{{$item->item->name}}</option>' +
 	    					'</select>' +
+	    					@endforeach
 	    				'</div>' +
 					'</td>' +
 					'<td>' +
 						'<div class="form-group mb-1">' +
-	    					'<input class="form-control qty_list" type="text" name="qty_request[]">' +
+						@foreach($itemdetail as $item)
+	    					'<input class="form-control qty_list" type="text" name="qty_request[]" value="{{$item->qty_request}}">' +
+	    				@endforeach
 	    				'</div>' +
 					'</td>' +
 					'<td>' +
@@ -275,9 +283,6 @@
 	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	          	}
 	      	});
-
-
-
 
 		});
 	</script>

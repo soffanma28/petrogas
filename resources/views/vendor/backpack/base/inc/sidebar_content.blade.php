@@ -9,8 +9,16 @@
 	</ul>
 </li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('item_request') }}'><i class='nav-icon fas fa-clipboard-list'></i> Item Requests</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('adminrequest') }}'><i class='nav-icon fas fa-circle-notch'></i> Admin Requests</a></li>
 <li class="nav-title">Office Management</li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('department') }}'><i class='nav-icon fas fa-building'></i> Departments</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('user') }}'><i class='nav-icon fas fa-user'></i> Users</a></li>
-
+<!-- Users, Roles, Permissions -->
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-user-cog"></i> Authentication</a>
+	<ul class="nav-dropdown-items">
+	  <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon far fa-user"></i> <span>Users</span></a></li>
+	  <li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon fas fa-user-tie"></i> <span>Roles</span></a></li>
+	  <li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon fas fa-key"></i> <span>Permissions</span></a></li>
+	</ul>
+</li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('department') }}'><i class='nav-icon far fa-building'></i> Departments</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('employee') }}'><i class='nav-icon fas fa-users'></i> Employees</a></li>

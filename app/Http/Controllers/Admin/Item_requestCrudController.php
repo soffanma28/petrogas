@@ -74,7 +74,7 @@ class Item_requestCrudController extends CrudController
            'name' => 'user_id', // the db column for the foreign key
            'entity' => 'user', // the method that defines the relationship in your Model
            'attribute' => 'name', // foreign key attribute that is shown to user
-           'model' => "App\Models\User", // foreign key model
+           'model' => "App\Models\BackpackUser", // foreign key model
 
            // optional
            // 'default' => 2, // set the default value of the select2
@@ -88,7 +88,7 @@ class Item_requestCrudController extends CrudController
            'name' => 'user_id', // the db column for the foreign key
            'entity' => 'user', // the method that defines the relationship in your Model
            'attribute' => 'email', // foreign key attribute that is shown to user
-           'model' => "App\Models\User", // foreign key model
+           'model' => "App\Models\BackpackUser", // foreign key model
 
            // optional
            // 'default' => 2, // set the default value of the select2

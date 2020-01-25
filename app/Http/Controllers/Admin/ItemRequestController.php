@@ -9,6 +9,7 @@ use App\Models\Item;
 use App\Models\Item_request;
 use App\Models\Item_request_detail;
 use App\Models\Item_category;
+use App\Models\Adminrequest;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -79,10 +80,10 @@ class ItemRequestController extends Controller
                 'requestor_id' => $request->input('requestor_id'),
                 'employee' => $emp,
                 'status' => 'Requested',
+                'req_date' => Carbon::now(),
                 'typeofrequest' => $request->input('typeofrequest'),
                 'remark' => $request->input('remark')
             ]);
-
                 break;
             default:
                 # code...
@@ -146,9 +147,67 @@ class ItemRequestController extends Controller
     }
 
     public function request($id){
-        Item_request::find($id)->update(['status' => 'Requested', 'req_date' => Carbon::now()]);
+        Item_request::find($id)->update(['status' => 'Requested','requestor_id' => backpack_user()->id, 'req_date' => Carbon::now()]);
         \Alert::success('Request submitted')->flash();
         return redirect()->route('item_request.index'); 
+    }
+
+    public function approve($id){
+        Item_request::find($id)->update(['status' => 'Approved','approver_id' => backpack_user()->id, 'approve_date' => Carbon::now()]);
+        Adminrequest::create([
+            'request_id' => $id,
+            'adminstatus' => 'Requested',
+        ]);
+        \Alert::success('Request approved, wait for admin process')->flash();
+        return redirect()->route('item_request.index');
+    }
+
+    public function process($id){
+
+        $adminrequest = Adminrequest::find($id);
+        $itemrequest = Item_request::find($adminrequest->request_id);
+        $itemdetail = Item_request_detail::where('req_id', $adminrequest->request_id)->get();
+
+        return view('adminrequest.process', compact('itemdetail', 'itemrequest', 'adminrequest'));
+
+    }
+
+    public function processed($id){
+
+        $adminrequest = Adminrequest::find($id);
+        Adminrequest::find($id)->update([
+            'adminstatus' => 'Approved',
+            'adminprove_id' => backpack_user()->id,
+            'adminprove_date' => Carbon::now(),
+        ]);
+        Item_request::find($adminrequest->request_id)->update([
+            'status' => 'On Process',
+            'on_process_id' => backpack_user()->id,
+            'process_date' => Carbon::now(),
+        ]);
+        \Alert::success('Request approved')->flash();
+        return redirect()->route('adminrequest.index');
+
+    }
+
+    public function complete($id){
+
+        $adminrequest = Adminrequest::find($id);
+        Adminrequest::find($id)->update([
+            'adminstatus' => 'Completed',
+            'admincompleted_id' => backpack_user()->id,
+            'admincomplete_date' => Carbon::now(),
+        ]);
+        Item_request::find($adminrequest->request_id)->update([
+            'status' => 'Completed',
+            'ready_id' => backpack_user()->id,
+            'ready_date' => Carbon::now(),
+            'completed_id' => backpack_user()->id,
+            'complete_date' => Carbon::now(),
+        ]);
+        \Alert::success('Request completed')->flash();
+        return redirect()->route('adminrequest.index');
+
     }
 
 

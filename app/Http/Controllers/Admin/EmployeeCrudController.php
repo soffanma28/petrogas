@@ -31,16 +31,16 @@ class EmployeeCrudController extends CrudController
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         // $this->crud->setFromDb();
         $this->crud->addColumn(['name' => 'employee_id', 'type' => 'text', 'label' => 'Employee Id']);
+        $this->crud->addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Name']);
         $this->crud->addColumn([
            // 1-n relationship
            'label' => "Requestor", // Table column heading
            'type' => "select",
            'name' => 'requestor_id', // the column that contains the ID of that connected entity;
-           'entity' => 'user', // the method that defines the relationship in your Model
+           'entity' => 'requestor', // the method that defines the relationship in your Model
            'attribute' => "name", // foreign key attribute that is shown to user
-           'model' => "App\Models\User", // foreign key model
+           'model' => "App\Models\BackpackUser", // foreign key model
         ]);
-        $this->crud->addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Name']);
         $this->crud->addColumn([
            // 1-n relationship
            'label' => "User", // Table column heading
@@ -48,7 +48,7 @@ class EmployeeCrudController extends CrudController
            'name' => 'user_id', // the column that contains the ID of that connected entity;
            'entity' => 'user', // the method that defines the relationship in your Model
            'attribute' => "name", // foreign key attribute that is shown to user
-           'model' => "App\Models\User", // foreign key model
+           'model' => "App\Models\BackpackUser", // foreign key model
         ]);
     }
 
@@ -65,16 +65,16 @@ class EmployeeCrudController extends CrudController
            'name' => 'user_id', // the column that contains the ID of that connected entity;
            'entity' => 'user', // the method that defines the relationship in your Model
            'attribute' => "name", // foreign key attribute that is shown to user
-           'model' => "App\Models\User", // foreign key model
+           'model' => "App\Models\BackpackUser", // foreign key model
         ]);
         $this->crud->addField([
            // 1-n relationship
            'label' => "Requestor", // Table column heading
            'type' => "select2",
            'name' => 'requestor_id', // the column that contains the ID of that connected entity;
-           'entity' => 'user', // the method that defines the relationship in your Model
+           'entity' => 'requestor', // the method that defines the relationship in your Model
            'attribute' => "name", // foreign key attribute that is shown to user
-           'model' => "App\Models\User", // foreign key model
+           'model' => "App\Models\BackpackUser", // foreign key model
         ]);
         $this->crud->addField(['name' => 'employee_id', 'type' => 'text', 'label' => 'Employee Id']);
         $this->crud->addField(['name' => 'name', 'type' => 'text', 'label' => 'Name']);

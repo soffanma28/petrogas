@@ -17,7 +17,6 @@ class CreateItemRequestsTable extends Migration
             $table->integer('requestor_id');
             $table->string('employee');
             $table->integer('approver_id')->nullable();
-            $table->integer('adminprove_id')->nullable();
             $table->integer('on_process_id')->nullable();
             $table->integer('ready_id')->nullable();
             $table->integer('completed_id')->nullable();

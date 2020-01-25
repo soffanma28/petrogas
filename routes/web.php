@@ -31,7 +31,15 @@ Route::group([
 		Route::post('store', 'Admin\ItemRequestController@store')->name('item_request.store');
 		Route::post('{id}/draft', 'Admin\ItemRequestController@draft')->name('item_request.draft');
 		Route::post('{id}/request', 'Admin\ItemRequestController@request')->name('item_request.request');
+		Route::post('{id}/approve', 'Admin\ItemRequestController@approve')->name('item_request.approve');
+		
 		// Route::post('storeitem', 'Admin\ItemRequestController@storeitem')->name('item_list.store');
+	});
+
+	Route::prefix('adminrequest')->group(function(){
+		Route::get('{id}/process', 'Admin\ItemRequestController@process')->name('item_request.process');
+		Route::post('{id}/processed', 'Admin\ItemRequestController@processed')->name('item_request.processed');
+		Route::post('{id}/complete', 'Admin\ItemRequestController@complete')->name('item_request.complete');
 	});
 
 }); // this should be the absolute last line of this file
