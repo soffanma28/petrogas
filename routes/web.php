@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('backpack.dashboard');
 });
 
 // Route::get('api/user', 'App\Http\Controllers\Api\UserController@index');
@@ -31,7 +31,9 @@ Route::group([
 		Route::post('store', 'Admin\ItemRequestController@store')->name('item_request.store');
 		Route::post('{id}/draft', 'Admin\ItemRequestController@draft')->name('item_request.draft');
 		Route::post('{id}/request', 'Admin\ItemRequestController@request')->name('item_request.request');
-		Route::post('{id}/approve', 'Admin\ItemRequestController@approve')->name('item_request.approve');
+		Route::get('{id}/approve', 'Admin\ItemRequestController@approve')->name('item_request.approve');
+		Route::get('{id}/edit', 'Admin\ItemRequestController@edit')->name('item_request.edit');
+		Route::post('{id}/update', 'Admin\ItemRequestController@update')->name('item_request.update');
 		
 		// Route::post('storeitem', 'Admin\ItemRequestController@storeitem')->name('item_list.store');
 	});

@@ -26,7 +26,12 @@ class Item_requestRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'employee' => 'required',
+            'typeofrequest' => 'required',
+            'status' => 'required',
+            'remark' => 'required',
+            'items' => 'required',
+            'qty_request' => 'required',
         ];
     }
 

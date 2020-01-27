@@ -84,6 +84,12 @@ class BackpackUser extends User
 
     /*
     |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
@@ -96,7 +102,7 @@ class BackpackUser extends User
     }
 
     public function employee(){
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
+        return $this->hasOne('App\Models\Employee', 'user_id', 'id');
     }
 
     public function request_employee(){
@@ -106,12 +112,6 @@ class BackpackUser extends User
     public function approver(){
         return $this->belongsTo('App\Models\BackpackUser', 'approver_id', 'id');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
 
     /*
     |--------------------------------------------------------------------------

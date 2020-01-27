@@ -5,6 +5,8 @@
 		$adminstatus = data_get($entry, 'adminstatus');
 	@endphp
 	@if($status == 'Approved')
+	<a href="{{ url($crud->route.'/'.$entry->getKey().'/request') }}" class="btn btn-sm btn-link"><i class="fas fa-spinner"></i> Process</a>
+	@elseif ($adminstatus == 'Requested')
 	<a href="{{ url($crud->route.'/'.$entry->getKey().'/process') }}" class="btn btn-sm btn-link"><i class="fas fa-spinner"></i> Process</a>
 	@elseif ($adminstatus == 'Approved')
 	<form method="POST" action="{{ url($crud->route.'/'.$entry->getKey().'/complete') }}">

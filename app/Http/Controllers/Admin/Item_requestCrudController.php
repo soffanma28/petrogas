@@ -56,64 +56,6 @@ class Item_requestCrudController extends CrudController
     protected function setupCreateOperation()
     {
         $this->crud->setValidation(Item_requestRequest::class);
-        $this->crud->addField([   // date_picker
-           'name' => 'req_date',
-           'type' => 'date_picker',
-           'label' => 'Request Date',
-           'default' => Carbon::now()->toDateString(),
-           // optional:
-           'date_picker_options' => [
-              'todayBtn' => 'linked',
-              'format' => 'dd-mm-yyyy',
-              'language' => 'en',
-           ],
-        ]);
-        $this->crud->addField([  // Select2
-           'label' => "Requestor",
-           'type' => 'select2',
-           'name' => 'user_id', // the db column for the foreign key
-           'entity' => 'user', // the method that defines the relationship in your Model
-           'attribute' => 'name', // foreign key attribute that is shown to user
-           'model' => "App\Models\BackpackUser", // foreign key model
-
-           // optional
-           // 'default' => 2, // set the default value of the select2
-           // 'options'   => (function ($query) {
-           //      return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
-           //  }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-        ]);
-        $this->crud->addField([  // Select2
-           'label' => "Requestor",
-           'type' => 'select2',
-           'name' => 'user_id', // the db column for the foreign key
-           'entity' => 'user', // the method that defines the relationship in your Model
-           'attribute' => 'email', // foreign key attribute that is shown to user
-           'model' => "App\Models\BackpackUser", // foreign key model
-
-           // optional
-           // 'default' => 2, // set the default value of the select2
-           // 'options'   => (function ($query) {
-           //      return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
-           //  }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-        ]);
-        $this->crud->addField(['name' => 'status', 'type' => 'text', 'label' => 'Status', 'default' => 'Ready']);
-        $this->crud->addField([   // Textarea
-            'name' => 'remark',
-            'label' => 'Remark',
-            'type' => 'textarea'
-        ]);
-        $this->crud->addField([   // Table
-            'name' => 'items',
-            'label' => 'Item',
-            'type' => 'table',
-            'entity_singular' => 'item', // used on the "Add X" button
-            'columns' => [
-                'item_name' => 'Item name',
-                'qty' => 'Quantity'
-            ],
-            'max' => 10, // maximum rows allowed in the table
-            'min' => 0, // minimum rows allowed in the table
-        ]);
         // $this->crud->setCreateView('item_request.create');   
         // TODO: remove setFromDb() and manually define Fields
         // $this->crud->setFromDb();

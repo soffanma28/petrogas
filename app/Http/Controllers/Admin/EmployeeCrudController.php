@@ -50,6 +50,7 @@ class EmployeeCrudController extends CrudController
            'attribute' => "name", // foreign key attribute that is shown to user
            'model' => "App\Models\BackpackUser", // foreign key model
         ]);
+        $this->crud->removeButton('show');
     }
 
     protected function setupCreateOperation()

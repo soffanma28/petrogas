@@ -35,7 +35,7 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
     public function user(){
-        return $this->belongsTo('App\Models\BackpackUser', 'user_id', 'id');
+        return $this->belongsTo('App\Models\BackpackUser', 'id', 'user_id');
     }
 
     public function requestor(){

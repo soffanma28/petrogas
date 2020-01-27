@@ -50,82 +50,87 @@
 	    				 <a href="{{ url()->previous() }}" class="btn btn-default"><span class="fas fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
 			    	</div>
 		    	</div>
-		    	<div class="col-lg-7 col-md-12 col-sm-12">
+		    	<div class="col-lg-6 col-md-12 col-sm-12">
 		    		<div class="card">
 		    			<div class="card-body">
-		    				<div class="form-group">
-		    					<label>Requestor</label>
+		    				<div class="form-group row">
+		    					<label class="col-sm-3 col-form-label">Requestor</label>
 		    					<input class="form-control" type="text" name="requestor_id" value="{{backpack_user()->id}}" hidden>
-		    					<input class="form-control" type="text" name="requestor" value="{{backpack_user()->id}} -- {{backpack_user()->name}}" disabled>
+		    					<div class="col-sm-9">
+		    						<input class="form-control" type="text" name="requestor" value="{{backpack_user()->employee->employee_id}} -- {{backpack_user()->employee->name}}" disabled>
+		    					</div>
 		    				</div>
-		    				<div class="form-group">
-		    					<label>Employee</label>
-		    					<select class="form-control" id="employee" name="employee[]" multiple="multiple">
-		    						@foreach($employees as $employee)
-		    							<option value="{{ $employee->employee_id }}">{{ $employee->employee_id }} - {{$employee->name}}</option>
-		    						@endforeach
-		    					</select>
+		    				<div class="form-group row">
+		    					<label class="col-sm-3 col-form-label">Employee</label>
+		    					<div class="col-sm-9">
+		    						<select class="form-control" id="employee" name="employee[]" multiple="multiple" required>
+			    						@foreach($employees as $employee)
+			    							<option value="{{ $employee->employee_id }}">{{ $employee->employee_id }} - {{$employee->name}}</option>
+			    						@endforeach
+			    					</select>
+		    					</div>
 		    				</div>
-		    				<div class="form-group">
-		    					<label>Department</label>
-		    					<input class="form-control" type="text" name="department" id="department" value="{{ backpack_user()->department->name }}" disabled>
+		    				<div class="form-group row">
+		    					<label class="col-sm-3 col-form-label">Department</label>
+		    					<div class="col-sm-9">
+		    						<input class="form-control" type="text" name="department" id="department" value="{{ backpack_user()->department->name }}" disabled>
+		    					</div>
 		    				</div>
-		    				<div class="form-group">
-		    					<label>Email</label>
-		    					<input class="form-control" type="email" name="email" id="email" value="{{ backpack_user()->email }}" disabled>
+		    				<div class="form-group row">
+		    					<label class="col-sm-3 col-form-label">Email</label>
+		    					<div class="col-sm-9">
+		    						<input class="form-control" type="email" name="email" id="email" value="{{ backpack_user()->email }}" disabled>
+		    					</div>
 		    				</div>
-		    				<div class="form-group" >
-							    <label>Request Date</label>
-							    <div class="input-group date" id="reqdatetimepicker">
-							        <input type="text" class="form-control" name="req_date" value="{{Carbon\Carbon::now()->format('d/m/Y H:i:s')}}">
-							        <span class="input-group-addon input-group-text">
-				                        <span class="far fa-calendar"></span>
-				                    </span>
+		    				<div class="form-group row">
+							    <label class="col-sm-3 col-form-label">Request Date</label>
+							    <div class="col-sm-9">
+							    	<div class="input-group date" id="reqdatetimepicker">
+								        <input type="datetime" class="form-control" name="req_date" value="{{Carbon\Carbon::now()->format('d/m/Y H:i:s')}}" required>
+								        <span class="input-group-addon input-group-text">
+					                        <span class="far fa-calendar"></span>
+					                    </span>
+								    </div>
 							    </div>
 							</div>
+							<div class="form-group row">
+		    					<label class="col-sm-3">Type Of Request</label>
+		    					<div class="col-sm-9">
+		    						<select class="form-control select" id="category" name="typeofrequest" required>
+			    						@foreach($categories as $category)
+			    							<option value="{{ $category->name }}">{{$category->name}}</option>
+			    						@endforeach
+			    					</select>
+		    					</div>
+		    				</div>
+		    				<div class="form-group row">
+		    					<label class="col-sm-3">Status</label>
+		    					<div class="col-sm-9">
+		    						<select class="form-control select" id="status" name="status">
+			    						<option value="Draft" selected>Draft</option>
+			    						<option value="Requested">Requested</option>
+			    					</select>
+		    					</div>
+		    				</div>
+		    				<div class="form-group row">
+		    					<label class="col-sm-3">Remark</label>
+		    					<div class="col-sm-9">
+		    						 <textarea class="form-control textarea" type="text" name="remark" id="remark" value="" required></textarea>
+		    					</div>
+		    				</div>
 		    			</div>
 		    		</div>
 		    	</div>
-		    	<div class="col-lg-5 col-md-12 col-sm-12">
+		    	<div class="col-lg-6 col-md-12 col-sm-12">
 		    		<div class="card">
 		    			<div class="card-body">
-		    				<div class="form-group">
-		    					<label>Type Of Request</label>
-		    					<select class="form-control select" id="category" name="typeofrequest">
-		    						@foreach($categories as $category)
-		    							<option value="{{ $category->name }}">{{$category->name}}</option>
-		    						@endforeach
-		    					</select>
-		    				</div>
-		    				<div class="form-group">
-		    					<label>Status</label>
-		    					<select class="form-control select" id="status" name="status">
-		    						<option value="Draft" selected>Draft</option>
-		    						<option value="Requested">Requested</option>
-		    						<option value="Approval">Approval</option>
-		    						<option value="Approved">Approved</option>
-		    						<option value="On Process">On Process</option>
-		    						<option value="Ready">Ready</option>
-		    						<option value="Completed">Completed</option>
-		    					</select>
-		    				</div>
-		    				<div class="form-group">
-		    					<label>Remark</label>
-		    					<textarea class="form-control textarea" type="text" name="remark" id="remark" value=""></textarea>
-		    				</div>
-		    			</div>
-		    		</div>
-		    	</div>
-		    	<div class="col-lg-12 col-md-12 col-sm-12">
-		    		<div class="card">
-		    			<div class="card-body mb-5">
 		    				<h3>Items</h3>
 		    				<div class="table-responsive">
 		    					<table id="request_list" class="table mt-2 mb-0">
 			    					<thead class="">
 			    						<tr>
 			    							<th>Item name -- Quantity</th>
-			    							<th>Quantity Request</th>
+			    							<th>Qty Request</th>
 			    							<th>Action</th>
 			    						</tr>
 			    					</thead>
@@ -133,7 +138,7 @@
 			    						<tr>
 			    							<td style="width: 60%" class="pb-0">
 			    								<div class="form-group">
-							    					<select class="form-control select2 item_list" name="items[]">
+							    					<select class="form-control select2 item_list" name="items[]" required>
 							    						@foreach($items as $item)
 															<option value="{{$item->id}}">{{$item->name}} -- {{$item->qty}}</option>
 							    						@endforeach
@@ -142,10 +147,10 @@
 			    							</td>
 			    							<td>
 			    								<div class="form-group mb-1">
-							    					<input class="form-control qty_list" type="text" name="qty_request[]">
+							    					<input class="form-control qty_list" type="number" name="qty_request[]" required>
 							    				</div>
 			    							</td>
-			    							<td>
+			    							<td style="text-align: center;">
 			    								<a href="javascript:void(0)">
 			    									<i class="fas fa-trash fa-lg mt-2 removeitem"></i>
 			    								</a>
@@ -155,52 +160,9 @@
 			    				</table>
 			    				<a href="javascript:void(0)" class="btn btn-primary" id="additem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
 		    				</div>
-		    				
 		    			</div>
 		    		</div>
 		    	</div>
-		    	<!-- <div class="col-lg-12 col-md-12 col-sm-12">
-				    <div class="card cardprogress">
-				        <div class="row d-flex justify-content-between px-3 top">
-				            <div class="d-flex">
-				                <h5>ORDER <span class="text-primary font-weight-bold">#Y34XDHR</span></h5>
-				            </div>
-				            <div class="d-flex flex-column text-sm-right">
-				                <p class="mb-0">Expected Arrival <span>01/12/19</span></p>
-				                <p>USPS <span class="font-weight-bold">234094567242423422898</span></p>
-				            </div>
-				        </div> 
-				        <div class="row d-flex justify-content-center">
-				            <div class="col-12">
-				                <ul id="progressbar" class="text-center">
-				                    <li class="active check step0">
-				                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
-				                    	<p class="mb-1">Sugiyono</p>
-				                    	<p class="">22/01/2020 12:00 AM</p>
-				                    </li>
-				                    <li class="active check step0">
-				                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Approval</p>
-				                    	<p class="mb-1">Sugiyono</p>
-				                    	<p class="">22/01/2020 12:00 AM</p>
-				                    </li>
-				                    <li class="active check step0">
-				                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">On Process</p>
-				                    	<p class="mb-1">Sugiyono</p>
-				                    	<p class="">22/01/2020 12:00 AM</p>
-				                    </li>
-				                    <li class="active check step0">
-				                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Ready</p>
-				                    	<p class="mb-1">Sugiyono</p>
-				                    	<p class="">22/01/2020 12:00 AM</p>
-				                    </li>
-				                    <li class="round step0">
-				                    	<p class="font-weight-bold">Completed</p>
-				                    </li>
-				                </ul>
-				            </div>
-				        </div>
-				    </div>
-				</div> -->
 		    </div>
 
 		  </form>
@@ -252,10 +214,10 @@
 					'</td>' +
 					'<td>' +
 						'<div class="form-group mb-1">' +
-	    					'<input class="form-control qty_list" type="text" name="qty_request[]">' +
+	    					'<input class="form-control qty_list" type="number" name="qty_request[]">' +
 	    				'</div>' +
 					'</td>' +
-					'<td>' +
+					'<td style="text-align: center">' +
 						'<a href="javascript:void(0)" id="'+i+'" class="removeitem">' +
 							'<i class="fas fa-trash fa-lg mt-2"></i>' +
 						'</a>' +
@@ -269,14 +231,6 @@
 		        var btnid = $(this).attr("id");   
 		        $('#row'+btnid+'').remove();  
 		    });  
-
-		    $.ajaxSetup({
-	          	headers: {
-	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	          	}
-	      	});
-
-
 
 
 		});

@@ -17,6 +17,7 @@ class CreateItemRequestDetailsTable extends Migration
             $table->integer('req_id');
             $table->integer('item_id');
             $table->integer('qty_request');
+            $table->integer('qty_actual')->nullable();
             $table->timestamps();
         });
     }

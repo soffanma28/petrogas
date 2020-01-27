@@ -54,6 +54,7 @@ return [
         'packages/line-awesome/css/line-awesome.min.css',
         'packages/chart/Chart.min.css',
         'packages/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
+        'packages/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
         'packages/select2/dist/css/select2.css',
 
         // Example (the fonts above, loaded from CDN instead)
@@ -127,6 +128,8 @@ return [
         'packages/backpack/base/js/bundle.js',
         'packages/chart/Chart.min.js',
         'packages/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+        'packages/moment/min/moment.min.js',
+        'packages/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
         'packages/select2/dist/js/select2.full.js',
 
         // examples (everything inside the bundle, loaded from CDN)

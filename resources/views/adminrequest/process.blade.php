@@ -20,7 +20,7 @@
 
     <section class="container-fluid">
 	 	<h2>
-	        <span class="text-capitalize">Office Supply Request Form</span>
+	        <span class="text-capitalize">Office Supply Admin Form</span>
 	        <!-- <small>Add item.</small> -->
 			<small><a href="http://localhost:8000/admin/item_request" class="hidden-print font-sm"><i class="fas fa-angle-double-left"></i> Back </a></small>
     	</h2>
@@ -49,7 +49,7 @@
 
 	    				<button type="submit" name="action" value="proprove" class="btn btn-success">
 				            <span class="far fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
-				            <span data-value="">Process & Approval</span>
+				            <span data-value="">Save & Approval</span>
 				        </button>
 
 	    				 <a href="{{ url()->previous() }}" class="btn btn-default"><span class="fas fa-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
