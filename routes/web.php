@@ -30,7 +30,7 @@ Route::group([
 		Route::get('create/dept', 'Admin\ItemRequestController@dept');
 		Route::post('store', 'Admin\ItemRequestController@store')->name('item_request.store');
 		Route::post('{id}/draft', 'Admin\ItemRequestController@draft')->name('item_request.draft');
-		Route::post('{id}/request', 'Admin\ItemRequestController@request')->name('item_request.request');
+		Route::post('{id}/send', 'Admin\ItemRequestController@send')->name('item_request.send');
 		Route::get('{id}/approve', 'Admin\ItemRequestController@approve')->name('item_request.approve');
 		Route::get('{id}/edit', 'Admin\ItemRequestController@edit')->name('item_request.edit');
 		Route::post('{id}/update', 'Admin\ItemRequestController@update')->name('item_request.update');

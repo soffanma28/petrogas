@@ -289,6 +289,15 @@ class ItemRequestController extends Controller
 
     }
 
+    public function send($id){
+        $itemrequest = Item_request::find($id)->update([
+            'status' => 'Requested',
+            'req_date' => Carbon::now(),
+        ]);
+        \Alert::success('Request submitted')->flash();
+        return redirect()->route('item_request.index');
+    }
+
     public function approve($id){
         $itemrequest = Item_request::find($id);
         $itemdetail = Item_request_detail::where('req_id', $id)->get();

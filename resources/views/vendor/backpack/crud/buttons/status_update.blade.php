@@ -18,7 +18,7 @@
 	</div>
 	@elseif ($status == 'Draft')
 		@if(backpack_user()->can('Request Supply'))
-		<form method="POST" action="{{ url($crud->route.'/'.$entry->getKey().'/request') }}">
+		<form method="POST" action="{{ url($crud->route.'/'.$entry->getKey().'/send') }}">
 			{!! csrf_field() !!}
 			<button class="btn btn-sm btn-link" type="submit"><i class="far fa-paper-plane"></i> Request</button>
 		</form>
