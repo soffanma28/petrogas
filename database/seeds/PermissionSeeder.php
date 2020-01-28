@@ -32,6 +32,14 @@ class PermissionSeeder extends Seeder
             'name' => 'Complete Admin',
             'guard_name' => 'backpack',
         ]);
-        
+        DB::table('roles')->insert([
+            'name' => 'Super Admin',
+            'guard_name' => 'backpack',
+        ]);
+        DB::table('model_has_roles')->insert([
+            'role_id' => 1,
+            'model_type' => 'App\Models\BackpackUser',
+            'model_id' => 1,
+        ]);
     }
 }
