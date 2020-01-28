@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         			ItemCategoryTableSeeder::class,
         			ItemTableSeeder::class,
         			UsersTableSeeder::class,
-                    PermissionTableSeeder::class,
+                    PermissionSeeder::class,
         			]);
     }
 }
