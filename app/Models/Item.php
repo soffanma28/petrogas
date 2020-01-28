@@ -38,6 +38,10 @@ class Item extends Model
         return $this->hasOne('App\Models\Item_category', 'id', 'category_id');
     }
 
+    public function detail(){
+        return $this->hasMany('App\Models\Item_request_detail', 'id', 'item_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

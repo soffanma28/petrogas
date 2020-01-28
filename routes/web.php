@@ -39,6 +39,10 @@ Route::group([
 	});
 
 	Route::prefix('adminrequest')->group(function(){
+		Route::get('{id}/request', 'Admin\ItemRequestController@request')->name('adminrequest.request');
+		Route::post('{id}/adminrequest', 'Admin\ItemRequestController@adminrequest')->name('adminrequest.adminrequest');
+		Route::get('{id}/approve', 'Admin\ItemRequestController@request')->name('adminrequest.approve');
+		Route::post('{id}/update', 'Admin\ItemRequestController@adminupdate')->name('adminrequest.update');
 		Route::get('{id}/process', 'Admin\ItemRequestController@process')->name('item_request.process');
 		Route::post('{id}/processed', 'Admin\ItemRequestController@processed')->name('item_request.processed');
 		Route::post('{id}/complete', 'Admin\ItemRequestController@complete')->name('item_request.complete');

@@ -136,21 +136,21 @@
 			    					</thead>
 			    					<tbody id="reqbody">
 			    						<tr>
-			    							<td style="width: 60%" class="pb-0">
-			    								<div class="form-group">
+			    							<td style="width: 60%" class="pb-0 pt-2">
+			    								<div class="form-group mb-1">
 							    					<select class="form-control select2 item_list" name="items[]" required>
 							    						@foreach($items as $item)
-															<option value="{{$item->id}}">{{$item->name}} -- {{$item->qty}}</option>
+															<option value="{{$item->name}}">{{$item->name}} -- {{$item->qty}}</option>
 							    						@endforeach
 							    					</select>
 							    				</div>
 			    							</td>
-			    							<td>
+			    							<td class="pt-1 pb-1">
 			    								<div class="form-group mb-1">
 							    					<input class="form-control qty_list" type="number" name="qty_request[]" required>
 							    				</div>
 			    							</td>
-			    							<td style="text-align: center;">
+			    							<td style="text-align: center;" class="pt-1 pb-1">
 			    								<a href="javascript:void(0)">
 			    									<i class="fas fa-trash fa-lg mt-2 removeitem"></i>
 			    								</a>
@@ -158,16 +158,50 @@
 			    						</tr>
 			    					</tbody>
 			    				</table>
-			    				<a href="javascript:void(0)" class="btn btn-primary" id="additem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
+			    				<div class="row">
+			    					<div class="col-sm-3 pr-1">
+			    						<a href="javascript:void(0)" class="btn btn-primary w-100" id="additem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
+			    					</div>
+			    					<div class="col-sm-4 pl-0">
+			    						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
+										  <span class="ladda-label"><i class="fas fa-upload"></i> Import item</span>
+										</button>
+			    						<!-- <a href="javascript:void(0)" class="btn btn-success" id="importItem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-upload"></i> Import item</span></a> -->
+			    					</div>
+			    				</div>
 		    				</div>
 		    			</div>
 		    		</div>
 		    	</div>
 		    </div>
+			
 
 		  </form>
 	</div>
 </div>
+
+<!-- IMPORT Modal -->
+			<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true" data-backdrop="false" style="background-color: rgba(0, 0, 0, 0.5);">
+			  <div class="modal-dialog modal-dialog-centered" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="importModalLabel">Import items</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        <div class="form-group">
+			        	<input type="file" name="importitem" id="import" class="form-control">
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" id="importitem" class="btn btn-primary">Import</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
 @endsection
 
@@ -175,6 +209,81 @@
 
 	<script type="text/javascript" src="{{ asset('packages/moment/min/moment.min.js') }}"></script>
 	<script src="{{ asset('packages/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.4/xlsx.full.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){ 
+
+
+
+			function toJSON(workbook) {
+			    var result = {};
+			    workbook.SheetNames.forEach(function(sheetName) {
+			      var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+			      if (roa.length > 0) {
+			        result[sheetName] = roa;
+			      }
+			    });
+			    return result;
+			};
+
+			function ImportToTable(json){
+
+			}
+
+			var jsonData = '';
+
+			$('#import').on('change', function (e) {
+				var importFile = e.target.files[0];
+
+				var fileReader = new FileReader();
+
+				fileReader.onload = function (e) {
+					var data = e.target.result;
+					var workbook = XLSX.read(data, {type: 'binary'});
+					jsonData = toJSON(workbook);
+					// console.log(jsonData['Sheet1'][0].name);
+
+				}
+
+				fileReader.readAsBinaryString(importFile);
+			});
+
+			
+
+			$('#importitem').on('click', function(){
+				$('.modal').modal('hide');
+
+				for (prop in jsonData) {
+
+				    for (var i = 0; i < jsonData[prop].length; i++){
+				    	$('#reqbody').append('<tr id="imrow'+i+'" class="req_added">' +
+		      				'<td style="width: 60%" class="pb-0 pt-2">' +
+								'<div class="form-group mb-1">' +
+			    					'<select class="form-control select2 item_list" name="items[]">' +
+			    							'<option value="'+ jsonData[prop][i].name +'">'+ jsonData[prop][i].name +'</option>' +
+			    					'</select>' +
+			    				'</div>' +
+							'</td>' +
+							'<td class="pt-1 pb-1>' +
+								'<div class="form-group mb-1">' +
+			    					'<input class="form-control qty_list" type="number" name="qty_request[]" value="'+jsonData[prop][i].qty_request+'">' +
+			    				'</div>' +
+							'</td>' +
+							'<td style="text-align: center" class="pt-1 pb-1">' +
+								'<a href="javascript:void(0)" id="'+i+'" class="removeimport">' +
+									'<i class="fas fa-trash fa-lg mt-2"></i>' +
+								'</a>' +
+							'</td>' +
+						'</tr>' );
+				    }
+				}
+				$('.item_list').select2();
+
+			});
+
+		});
+	</script>
 
 	<script type="text/javascript">
 
@@ -203,8 +312,8 @@
       		$('#additem').click(function () {
       			i++;
       			$('#reqbody').append('<tr id="row'+i+'" class="req_added">' +
-      				'<td style="width: 60%" class="pb-0">' +
-						'<div class="form-group">' +
+      				'<td style="width: 60%" class="pb-0 pt-2">' +
+						'<div class="form-group mb-1">' +
 	    					'<select class="form-control select2 item_list" name="items[]">' +
 	    						@foreach($items as $item)
 	    							'<option value="{{$item->id}}">{{$item->name}} -- {{$item->qty}}</option>' +
@@ -212,12 +321,12 @@
 	    					'</select>' +
 	    				'</div>' +
 					'</td>' +
-					'<td>' +
+					'<td class="pt-1 pb-1>' +
 						'<div class="form-group mb-1">' +
 	    					'<input class="form-control qty_list" type="number" name="qty_request[]">' +
 	    				'</div>' +
 					'</td>' +
-					'<td style="text-align: center">' +
+					'<td style="text-align: center" class="pt-1 pb-1">' +
 						'<a href="javascript:void(0)" id="'+i+'" class="removeitem">' +
 							'<i class="fas fa-trash fa-lg mt-2"></i>' +
 						'</a>' +
@@ -230,6 +339,10 @@
       		$(document).on('click', '.removeitem', function(){  
 		        var btnid = $(this).attr("id");   
 		        $('#row'+btnid+'').remove();  
+		    });
+		    $(document).on('click', '.removeimport', function(){  
+		        var btnid = $(this).attr("id");   
+		        $('#imrow'+btnid+'').remove();  
 		    });  
 
 

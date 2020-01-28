@@ -91,13 +91,30 @@ class ItemRequestController extends Controller
 
         if ($validator->passes()) {
             $req_id = $itemrequest->id;
+            $tem = [];
             foreach ($request->input('items') as $key => $value) {
-
-                Item_request_detail::create([
-                    'req_id' => $req_id,
-                    'item_id' => $value,
-                    'qty_request' => $request->input('qty_request.'.$key),
-                ]);
+                
+                if (Item::where('name', $value)->exists()) {
+                    $tem[$key] = Item::where('name', $value)->first();
+                    Item_request_detail::create([
+                        'req_id' => $req_id,
+                        'item_id' => $tem[$key]->id,
+                        'qty_request' => $request->input('qty_request.'.$key),
+                    ]);
+                } else {
+                    $tem[$key] = Item::create([
+                        'name' => $value,
+                        'category_id' => 1,
+                        'qty' => 1,
+                        'price' => 1, 
+                    ]); 
+                    Item_request_detail::create([
+                        'req_id' => $req_id,
+                        'item_id' => $tem[$key]->id,
+                        'qty_request' => $request->input('qty_request.'.$key),
+                    ]);
+                }
+                
             }
         }
 
@@ -132,30 +149,14 @@ class ItemRequestController extends Controller
 
     public function update(Request $request, $id){
         
-        $validate = $request->validate([
-            'employee' => 'required',
-            'typeofrequest' => 'required',
-            'status' => 'required',
-            'remark' => 'required',
-            'items' => 'required',
-            'qty_request' => 'required',
-        ]);
-        $emp = [];
-        foreach ($request->input('employee') as $key => $value) {
-            $emp[$key] = ['empid' => $value, 'empname' => Employee::where('employee_id',$value)->first()->name];
-        }
-        $rules = [];
-        foreach ($request->input('items') as $key => $value) {
-            $rules["items.{$key}"] = 'required';
-        }
-        foreach ($request->input('qty_request') as $key => $value) {
-            $rules["qty_request.{$key}"] = 'required';
-        }
-
-        $validator = Validator::make($request->all(), $rules);
+        
         // dd($request->input('items'));
         switch ($request->input('action')) {
             case 'approved':
+                $validate = $request->validate([
+                    'remark' => 'required',
+                    'qty_actual' => 'required',
+                ]);
                 Item_request::find($id)->update([
                     'status' => 'Approved',
                     'approver_id' => backpack_user()->id, 
@@ -183,12 +184,34 @@ class ItemRequestController extends Controller
                         ${'itemdetail'.$key}->update([
                             'qty_actual' => $value,
                         ]);
+                        \Alert::success($value)->flash();
                     }
                 }
 
                 \Alert::success('Request approved')->flash();
                 break;
             case 'draft':
+                $validate = $request->validate([
+                    'employee' => 'required',
+                    'typeofrequest' => 'required',
+                    'status' => 'required',
+                    'remark' => 'required',
+                    'items' => 'required',
+                    'qty_request' => 'required',
+                ]);
+                $emp = [];
+                foreach ($request->input('employee') as $key => $value) {
+                    $emp[$key] = ['empid' => $value, 'empname' => Employee::where('employee_id',$value)->first()->name];
+                }
+                $rules = [];
+                foreach ($request->input('items') as $key => $value) {
+                    $rules["items.{$key}"] = 'required';
+                }
+                foreach ($request->input('qty_request') as $key => $value) {
+                    $rules["qty_request.{$key}"] = 'required';
+                }
+
+                $validator = Validator::make($request->all(), $rules);
                 $itemrequest = Item_request::find($id)->update([
                     'requestor_id' => $request->input('requestor_id'),
                     'employee' => $emp,
@@ -209,6 +232,27 @@ class ItemRequestController extends Controller
                 \Alert::success('Request drafted')->flash();
                 break;
             case 'saveprove':
+                $validate = $request->validate([
+                    'employee' => 'required',
+                    'typeofrequest' => 'required',
+                    'status' => 'required',
+                    'remark' => 'required',
+                    'items' => 'required',
+                    'qty_request' => 'required',
+                ]);
+                $emp = [];
+                foreach ($request->input('employee') as $key => $value) {
+                    $emp[$key] = ['empid' => $value, 'empname' => Employee::where('employee_id',$value)->first()->name];
+                }
+                $rules = [];
+                foreach ($request->input('items') as $key => $value) {
+                    $rules["items.{$key}"] = 'required';
+                }
+                foreach ($request->input('qty_request') as $key => $value) {
+                    $rules["qty_request.{$key}"] = 'required';
+                }
+
+                $validator = Validator::make($request->all(), $rules);
                 $itemrequest = Item_request::find($id)->update([
                     'requestor_id' => $request->input('requestor_id'),
                     'employee' => $emp,
@@ -245,12 +289,6 @@ class ItemRequestController extends Controller
 
     }
 
-    public function request($id){
-        Item_request::find($id)->update(['status' => 'Requested','requestor_id' => backpack_user()->id, 'req_date' => Carbon::now()]);
-        \Alert::success('Request submitted')->flash();
-        return redirect()->route('item_request.index'); 
-    }
-
     public function approve($id){
         $itemrequest = Item_request::find($id);
         $itemdetail = Item_request_detail::where('req_id', $id)->get();
@@ -259,6 +297,58 @@ class ItemRequestController extends Controller
         $categories = Item_category::all();
 
         return view('item_request.approve', compact('itemrequest', 'itemdetail', 'items', 'employees', 'categories'));
+    }
+
+    public function request($id){
+        $adminrequest = Adminrequest::find($id);
+        $itemdetail = Item_request_detail::where('req_id', $adminrequest->request_id)->get();
+
+        $items = Item::all();
+        $employees = Employee::where('requestor_id', backpack_user()->id)->get();
+        $categories = Item_category::all();
+
+        return view('adminrequest.request', compact('adminrequest', 'itemdetail', 'items', 'employees', 'categories'));
+    }
+
+    public function adminupdate(Request $request, $id){
+        
+        switch ($request->input('action')) {
+            case 'saveprove':
+                $adminrequest = Adminrequest::find($id);
+                Item_request::find($adminrequest->request_id)->update([
+                    'status' => 'On Process',
+                    'on_process_id' => backpack_user()->id,
+                    'process_date' => Carbon::now(),
+                    'remark' => $request->input('remark'),
+                ]);
+                Adminrequest::find($id)->update([
+                    'adminstatus' => 'Requested',
+                ]);
+
+                \Alert::success('Request submitted')->flash();
+                break;
+            case 'approve':
+                $adminrequest = Adminrequest::find($id);
+                Item_request::find($adminrequest->request_id)->update([
+                    'status' => 'Ready',
+                    'ready_id' => backpack_user()->id,
+                    'ready_date' => Carbon::now(),
+                    'remark' => $request->input('remark'),
+                ]);
+                Adminrequest::find($id)->update([
+                    'adminstatus' => 'Approved',
+                    'adminprove_id' => backpack_user()->id,
+                    'adminprove_date' => Carbon::now(),
+                ]);
+
+                \Alert::success('Request approved')->flash();
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        return redirect()->route('adminrequest.index'); 
     }
 
     public function adminprove($id){
@@ -273,35 +363,6 @@ class ItemRequestController extends Controller
             'process_date' => Carbon::now(),
         ]);
         \Alert::success('Requested')->flash();
-        return redirect()->route('adminrequest.index');
-
-    }
-
-    public function process($id){
-
-        $adminrequest = Adminrequest::find($id);
-        $itemrequest = Item_request::find($adminrequest->request_id);
-        $itemdetail = Item_request_detail::where('req_id', $adminrequest->request_id)->get();
-
-        return view('adminrequest.process', compact('itemdetail', 'itemrequest', 'adminrequest'));
-
-    }
-
-    public function processed($id){
-
-        $adminrequest = Adminrequest::find($id);
-        Adminrequest::find($id)->update([
-            'adminstatus' => 'Approved',
-            'adminprove_id' => backpack_user()->id,
-            'adminprove_date' => Carbon::now(),
-        ]);
-        Item_request::find($adminrequest->request_id)->update([
-            'status' => 'Ready',
-            'ready_id' => backpack_user()->id,
-            'ready_date' => Carbon::now(),
-        ]);
-        
-        \Alert::success('Request approved')->flash();
         return redirect()->route('adminrequest.index');
 
     }

@@ -8,15 +8,17 @@
 		<tr>
 			<td>Item name</td>
 			<td>Quantity request</td>
+			<td>Quantity actual</td>
 			<td>Unit Cost</td>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach($items as $item)
 		<tr>
-			<td>{{$item->item->name}}</td>
-			<td>{{$item->qty_request}}</td>
-			<td>{{$item->qty_request * $item->item->price}}</td>
+			<td class="pt-0 pb-0">{{$item->item->name}}</td>
+			<td class="pt-0 pb-0">{{$item->qty_request}}</td>
+			<td class="pt-0 pb-0">{{$item->qty_actual}}</td>
+			<td class="pt-0 pb-0">{{$item->qty_actual * $item->item->price}}</td>
 		</tr>
 		@endforeach
 	</tbody>

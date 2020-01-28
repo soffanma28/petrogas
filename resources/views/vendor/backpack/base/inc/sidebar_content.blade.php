@@ -8,8 +8,13 @@
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('item') }}'><i class='nav-icon fas fa-clipboard'></i> Items</a></li>
 	</ul>
 </li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('item_request') }}'><i class='nav-icon fas fa-clipboard-list'></i> Item Requests</a></li>
+@if(backpack_user()->can('Request Supply') || backpack_user()->can('Approve Supply'))
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('item_request') }}'><i class='nav-icon fas fa-clipboard-list'></i> Office Supply Requests</a></li>
+@endif
+@if(backpack_user()->can('Request Admin') || backpack_user()->can('Approve Admin') || backpack_user()->can('Complete Admin'))
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('adminrequest') }}'><i class='nav-icon fas fa-circle-notch'></i> Admin Requests</a></li>
+@endif
+@role('Super Admin')
 <li class="nav-title">Office Management</li>
 <!-- Users, Roles, Permissions -->
 <li class="nav-item nav-dropdown">
@@ -22,3 +27,4 @@
 </li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('department') }}'><i class='nav-icon far fa-building'></i> Departments</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('employee') }}'><i class='nav-icon fas fa-users'></i> Employees</a></li>
+@endrole

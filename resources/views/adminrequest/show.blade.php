@@ -14,10 +14,10 @@
 @section('header')
 	<section class="container-fluid">
 	 <h2>
-        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+        <span class="text-capitalize">Admin Requests</span>
         <small>{!! $crud->getSubheading() ?? mb_ucfirst(trans('backpack::crud.preview')).' '.$crud->entity_name !!}.</small>
         @if ($crud->hasAccess('list'))
-          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+          <small><a href="{{ url($crud->route) }}" class="hidden-print font-sm"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }}</span></a></small>
         @endif
      </h2>
     </section>
@@ -251,7 +251,7 @@
 		            <div class="col-12">
 		                <ul id="progressbar" class="text-center">
 		                		<!-- REQUESTED -->
-		                	@if($status == 'Approved') 
+		                	@if($adminstatus == 'Requested') 
 								<li class="active check step0">
 			                    	<p class="font-weight-bold mb-1" style="font-size: 1.2em;">Requested</p>
 			                    	<p class="mb-1">{{ $requestor }}</p>

@@ -113,6 +113,14 @@ class BackpackUser extends User
         return $this->belongsTo('App\Models\BackpackUser', 'approver_id', 'id');
     }
 
+    public function adminprove(){
+        return $this->belongsTo('App\Models\BackpackUser', 'adminprove_id', 'id');
+    }
+
+    public function admincompleted(){
+        return $this->belongsTo('App\Models\BackpackUser', 'admincompleted_id', 'id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

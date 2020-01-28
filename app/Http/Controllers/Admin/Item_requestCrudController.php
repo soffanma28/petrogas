@@ -92,6 +92,33 @@ class Item_requestCrudController extends CrudController
            'model' => "App\Models\BackpackUser", // foreign key model
         ]);
         $this->crud->addColumn([
+           // 1-n relationship
+           'label' => "On Process by", // Table column heading
+           'type' => "select",
+           'name' => 'on_process_id', // the column that contains the ID of that connected entity;
+           'entity' => 'on_process', // the method that defines the relationship in your Model
+           'attribute' => "name", // foreign key attribute that is shown to user
+           'model' => "App\Models\BackpackUser", // foreign key model
+        ]);
+        $this->crud->addColumn([
+           // 1-n relationship
+           'label' => "Ready by", // Table column heading
+           'type' => "select",
+           'name' => 'ready', // the column that contains the ID of that connected entity;
+           'entity' => 'ready', // the method that defines the relationship in your Model
+           'attribute' => "name", // foreign key attribute that is shown to user
+           'model' => "App\Models\BackpackUser", // foreign key model
+        ]);
+        $this->crud->addColumn([
+           // 1-n relationship
+           'label' => "Complete by", // Table column heading
+           'type' => "select",
+           'name' => 'completed_id', // the column that contains the ID of that connected entity;
+           'entity' => 'complete', // the method that defines the relationship in your Model
+           'attribute' => "name", // foreign key attribute that is shown to user
+           'model' => "App\Models\BackpackUser", // foreign key model
+        ]);
+        $this->crud->addColumn([
           'name' => 'employee',
           'type' => 'employee',
           'label' => 'Employee'

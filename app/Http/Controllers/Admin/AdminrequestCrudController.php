@@ -89,6 +89,24 @@ class AdminrequestCrudController extends CrudController
             'type' => 'reqname',
         ]);
         $this->crud->addColumn([
+           // 1-n relationship
+           'label' => "Approver", // Table column heading
+           'type' => "select",
+           'name' => 'adminprove_id', // the column that contains the ID of that connected entity;
+           'entity' => 'approver', // the method that defines the relationship in your Model
+           'attribute' => "name", // foreign key attribute that is shown to user
+           'model' => "App\Models\BackpackUser", // foreign key model
+        ]);
+        $this->crud->addColumn([
+           // 1-n relationship
+           'label' => "Complete by", // Table column heading
+           'type' => "select",
+           'name' => 'admincompleted_id', // the column that contains the ID of that connected entity;
+           'entity' => 'complete', // the method that defines the relationship in your Model
+           'attribute' => "name", // foreign key attribute that is shown to user
+           'model' => "App\Models\BackpackUser", // foreign key model
+        ]);
+        $this->crud->addColumn([
             'label' => 'Request Date',
             'name' => 'request_id',
             'key' => 'request_date',

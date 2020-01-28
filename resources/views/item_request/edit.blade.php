@@ -251,32 +251,31 @@
 					    								</a>
 					    							</td>
 					    						</tr>
-			    								@elseif($loop->last)
-			    								<tr id="row{{$key}}">
-					    							<td style="width: 60%" class="pb-0" >
-					    								<div class="form-group">
-									    					<select class="form-control select2 item_list" name="items[]">
-									    						@foreach($items as $ite)
-																<option value="{{$ite->id}}">{{$ite->name}}</option>
-																@endforeach
-									    					</select>
-									    				</div>
-					    							</td>
-					    							<td>
-					    								<div class="form-group mb-1">
-									    					<input class="form-control qty_list" type="text" name="qty_request[]" value="">
-									    				</div>
-					    							</td>
-					    							<td style="text-align: center">
-					    								<a href="javascript:void(0)" id="{{$key}}" class="removeitem">
-					    									<i class="fas fa-trash fa-lg mt-2"></i>
-					    								</a>
-					    							</td>
-					    						</tr>
-					    						@else
 			    								@endif
 			    							@endforeach
+			    							
 			    						@endforeach
+			    						<tr id="row{{$key}}">
+			    							<td style="width: 60%" class="pb-0" >
+			    								<div class="form-group">
+							    					<select class="form-control select2 item_list" name="items[]">
+							    						@foreach($items as $ite)
+														<option value="{{$ite->id}}">{{$ite->name}}</option>
+														@endforeach
+							    					</select>
+							    				</div>
+			    							</td>
+			    							<td>
+			    								<div class="form-group mb-1">
+							    					<input class="form-control qty_list" type="text" name="qty_request[]" value="">
+							    				</div>
+			    							</td>
+			    							<td style="text-align: center">
+			    								<a href="javascript:void(0)" id="{{$key}}" class="removeitem">
+			    									<i class="fas fa-trash fa-lg mt-2"></i>
+			    								</a>
+			    							</td>
+			    						</tr>
 			    					</tbody>
 			    				</table>
 			    				<a href="javascript:void(0)" class="btn btn-primary" id="additem" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> {{ trans('backpack::crud.add') }} item</span></a>
@@ -307,12 +306,12 @@
 			    							</td>
 			    							<td>
 			    								<div class="form-group mb-1">
-							    					<input class="form-control qty_list" type="text" name="qty_request[]" value="{{$item->qty_request}}">
+							    					<input class="form-control qty_list" type="text" name="qty_request[]" value="{{$item->qty_request}}" disabled>
 							    				</div>
 			    							</td>
 			    							<td>
 			    								<div class="form-group mb-1">
-							    					<input class="form-control qty_list" type="text" name="qty_actual[]" value="@if($item->qty_actual != ''){{$item->qty_actual}}@else{{$item->qty_request}}@endif" required>
+							    					<input class="form-control qty_list" type="text" name="qty_actual[]" value="{{$item->qty_actual}}" required>
 							    				</div>
 			    							</td>
 			    							<!-- <td style="text-align: center">

@@ -13,8 +13,8 @@
 	<tbody>
 		@foreach($items as $item)
 		<tr>
-			<td>{{$item->item->name}}</td>
-			<td>{{$item->qty_request}}</td>
+			<td class="pt-0 pb-0">{{$item->item->name}}</td>
+			<td class="pt-0 pb-0">{{$item->qty_request}}</td>
 		</tr>
 		@endforeach
 	</tbody>

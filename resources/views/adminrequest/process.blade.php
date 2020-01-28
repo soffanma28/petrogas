@@ -13,7 +13,7 @@
 	<nav aria-label="breadcrumb" class="d-none d-lg-block">
 	  	<ol class="breadcrumb bg-transparent justify-content-end p-0">
 		    <li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/dashboard">Admin</a></li>
-			<li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/item_request">Item Request</a></li>
+			<li class="breadcrumb-item text-capitalize"><a href="http://localhost:8000/admin/adminrequest">Admin Request</a></li>
 			<li class="breadcrumb-item text-capitalize active" aria-current="page">Add</li>
 		</ol>
 	</nav>
@@ -22,7 +22,7 @@
 	 	<h2>
 	        <span class="text-capitalize">Office Supply Admin Form</span>
 	        <!-- <small>Add item.</small> -->
-			<small><a href="http://localhost:8000/admin/item_request" class="hidden-print font-sm"><i class="fas fa-angle-double-left"></i> Back </a></small>
+			<small><a href="http://localhost:8000/admin/adminrequest" class="hidden-print font-sm"><i class="fas fa-angle-double-left"></i> Back </a></small>
     	</h2>
 	</section>
 @endsection

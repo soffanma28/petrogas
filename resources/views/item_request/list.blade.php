@@ -14,7 +14,7 @@
 @section('header')
   <div class="container-fluid">
     <h2>
-      <span class="text-capitalize">Item Request</span>
+      <span class="text-capitalize">Office Supply Request</span>
       <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
     </h2>
   </div>
@@ -34,7 +34,9 @@
             <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
               @if ($crud->hasAccess('create'))
-                <a href="{{ url($crud->route.'/create') }}" class="btn btn-primary" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> Request Item</span></a>
+                @if(backpack_user()->can('Request Supply'))
+                <a href="{{ url($crud->route.'/create') }}" class="btn btn-primary" data-style="zoom-in"><span class="ladda-label"><i class="fas fa-plus"></i> Request Office Supply</span></a>
+                @endif
               @endif
 
             </div>
