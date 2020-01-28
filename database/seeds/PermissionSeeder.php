@@ -32,5 +32,6 @@ class PermissionSeeder extends Seeder
             'name' => 'Complete Admin',
             'guard_name' => 'backpack',
         ]);
+        
     }
 }
