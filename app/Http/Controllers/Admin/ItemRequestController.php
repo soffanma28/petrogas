@@ -102,17 +102,18 @@ class ItemRequestController extends Controller
                         'qty_request' => $request->input('qty_request.'.$key),
                     ]);
                 } else {
-                    $tem[$key] = Item::create([
-                        'name' => $value,
-                        'category_id' => 1,
-                        'qty' => 1,
-                        'price' => 1, 
-                    ]); 
-                    Item_request_detail::create([
-                        'req_id' => $req_id,
-                        'item_id' => $tem[$key]->id,
-                        'qty_request' => $request->input('qty_request.'.$key),
-                    ]);
+                    \Alert::error($value . ' not found in item database');
+                    // $tem[$key] = Item::create([
+                    //     'name' => $value,
+                    //     'category_id' => 1,
+                    //     'qty' => 1,
+                    //     'price' => 1, 
+                    // ]); 
+                    // Item_request_detail::create([
+                    //     'req_id' => $req_id,
+                    //     'item_id' => $tem[$key]->id,
+                    //     'qty_request' => $request->input('qty_request.'.$key),
+                    // ]);
                 }
                 
             }
